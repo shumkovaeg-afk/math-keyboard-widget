@@ -213,20 +213,19 @@ keys.forEach(key => {
     button.textContent = key;
 
     if (key === "Очистить") {
-        button.classList.add("action");
-        button.onclick = () => input.value = "";
-    } else if (key === "Проверить") {
-        button.classList.add("action");
-        button.onclick = checkAnswer;
-    } else if (key === "Дальше") {
-        button.classList.add("action");
-        button.onclick = nextTask;
-    } else {
-        button.onclick = () => insertAtCursor(key);
-    }
-
-    keyboard.appendChild(button);
-});
+    button.classList.add("action", "control");
+    button.onclick = () => input.value = "";
+} else if (key === "Проверить") {
+    button.classList.add("action", "control");
+    button.onclick = checkAnswer;
+} else if (key === "Дальше") {
+    button.classList.add("action", "next-btn");
+    button.onclick = nextTask;
+} else {
+    button.classList.add("input-key");
+    button.onclick = () => insertAtCursor(key);
+}
+);
 
 loadTask();
 </script>
