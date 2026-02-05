@@ -73,6 +73,11 @@
     .action:hover {
         background: #ffc107;
     }
+
+    .disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
 </style>
 </head>
 <body>
@@ -83,24 +88,25 @@
     <input type="text" id="answerInput" class="answer-input" placeholder="Введите ответ..." />
 
     <div class="feedback" id="feedback"></div>
-    <div class="attempts" id="attempts">Попытка: 0</div>
+    <div class="attempts" id="attempts">Попытка: 0 из 3</div>
 
     <div class="keyboard" id="keyboard"></div>
 </div>
 
 <script>
-    const correctAnswers = ["3", "-3", "±3"]; // можно расширять
+    const correctAnswers = ["3", "-3", "±3"];
+    const maxAttempts = 3;
     let attemptCount = 0;
+    let taskFinished = false;
 
     const keys = [
-    "7","8","9","+","-","±",
-    "4","5","6","×","÷","√",
-    "1","2","3","(",")","=",
-    "0",".","x","y","a","b",
-    "²","³","⁴","₁","₂","₃",
-    "Очистить","Проверить"
-];
-
+        "7","8","9","+","-","±",
+        "4","5","6","×","÷","√",
+        "1","2","3","(",")","=",
+        "0",".","x","y","a","b",
+        "²","³","⁴","₁","₂","₃",
+        "Очистить","Проверить"
+    ];
 
     const keyboard = document.getElementById("keyboard");
     const input = document.getElementById("answerInput");
@@ -108,6 +114,8 @@
     const attemptsDisplay = document.getElementById("attempts");
 
     function insertAtCursor(value) {
+        if (taskFinished) return;
+
         const start = input.selectionStart;
         const end = input.selectionEnd;
         const text = input.value;
@@ -117,19 +125,33 @@
         input.selectionStart = input.selectionEnd = start + value.length;
     }
 
+    function disableKeyboard() {
+        taskFinished = true;
+        document.querySelectorAll(".key").forEach(btn => btn.classList.add("disabled"));
+        input.disabled = true;
+    }
+
     function checkAnswer() {
+        if (taskFinished) return;
+
         attemptCount++;
-        attemptsDisplay.textContent = "Попытка: " + attemptCount;
+        attemptsDisplay.textContent = `Попытка: ${attemptCount} из ${maxAttempts}`;
 
         const userAnswer = input.value.replace(/\s+/g, "");
 
         if (correctAnswers.includes(userAnswer)) {
             feedback.textContent = "✅ Верно!";
             feedback.style.color = "green";
-            input.disabled = true;
+            disableKeyboard();
         } else {
-            feedback.textContent = "❌ Неверно, попробуйте ещё";
-            feedback.style.color = "red";
+            if (attemptCount >= maxAttempts) {
+                feedback.textContent = "❌ Попытки закончились. Повторите теорию.";
+                feedback.style.color = "red";
+                disableKeyboard();
+            } else {
+                feedback.textContent = "❌ Неверно, попробуйте ещё";
+                feedback.style.color = "red";
+            }
         }
     }
 
