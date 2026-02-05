@@ -41,10 +41,12 @@
         font-weight: bold;
     }
 
-    .attempts {
+    .stats {
         font-size: 14px;
         margin-bottom: 10px;
         color: #555;
+        display: flex;
+        justify-content: space-between;
     }
 
     .keyboard {
@@ -88,7 +90,11 @@
     <input type="text" id="answerInput" class="answer-input" placeholder="Введите ответ..." />
 
     <div class="feedback" id="feedback"></div>
-    <div class="attempts" id="attempts">Попытка: 0 из 3</div>
+
+    <div class="stats">
+        <div id="attempts">Попытка: 0 из 3</div>
+        <div id="score">Баллы: 0</div>
+    </div>
 
     <div class="keyboard" id="keyboard"></div>
 </div>
@@ -98,6 +104,13 @@
     const maxAttempts = 3;
     let attemptCount = 0;
     let taskFinished = false;
+    let score = 0;
+
+    const scoring = {
+        1: 100,
+        2: 50,
+        3: 25
+    };
 
     const keys = [
         "7","8","9","+","-","±",
@@ -112,6 +125,7 @@
     const input = document.getElementById("answerInput");
     const feedback = document.getElementById("feedback");
     const attemptsDisplay = document.getElementById("attempts");
+    const scoreDisplay = document.getElementById("score");
 
     function insertAtCursor(value) {
         if (taskFinished) return;
@@ -140,12 +154,14 @@
         const userAnswer = input.value.replace(/\s+/g, "");
 
         if (correctAnswers.includes(userAnswer)) {
-            feedback.textContent = "✅ Верно!";
+            score = scoring[attemptCount] || 0;
+            scoreDisplay.textContent = `Баллы: ${score}`;
+            feedback.textContent = `✅ Верно! +${score} баллов`;
             feedback.style.color = "green";
             disableKeyboard();
         } else {
             if (attemptCount >= maxAttempts) {
-                feedback.textContent = "❌ Попытки закончились. Повторите теорию.";
+                feedback.textContent = "❌ Попытки закончились. Баллы: 0";
                 feedback.style.color = "red";
                 disableKeyboard();
             } else {
