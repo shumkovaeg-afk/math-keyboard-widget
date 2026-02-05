@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Math Keyboard Widget</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .widget {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        width: 420px;
+    }
+
+    .question {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .answer-input {
+        width: 100%;
+        font-size: 20px;
+        padding: 8px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+
+    .keyboard {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 6px;
+    }
+
+    .key {
+        padding: 10px;
+        font-size: 18px;
+        border-radius: 8px;
+        border: none;
+        background: #e3e7ee;
+        cursor: pointer;
+        transition: 0.15s;
+    }
+
+    .key:hover {
+        background: #d0d6df;
+    }
+
+    .key.action {
+        background: #ffd966;
+    }
+
+    .key.action:hover {
+        background: #ffc107;
+    }
+</style>
+</head>
+<body>
+
+<div class="widget">
+    <div class="question">Решите: x² = 9</div>
+
+    <input type="text" id="answerInput" class="answer-input" placeholder="Введите ответ..." />
+
+    <div class="keyboard" id="keyboard"></div>
+</div>
+
+<script>
+    const keys = [
+        "7","8","9","+","-","±",
+        "4","5","6","×","÷","√",
+        "1","2","3","(",")","=",
+        "0",".","x","y","x²","x₁",
+        "Очистить"
+    ];
+
+    const keyboard = document.getElementById("keyboard");
+    const input = document.getElementById("answerInput");
+
+    function insertAtCursor(value) {
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const text = input.value;
+
+        input.value = text.substring(0, start) + value + text.substring(end);
+        input.focus();
+        input.selectionStart = input.selectionEnd = start + value.length;
+    }
+
+    keys.forEach(key => {
+        const button = document.createElement("button");
+        button.className = "key";
+        button.textContent = key;
+
+        if (key === "Очистить") {
+            button.classList.add("action");
+            button.addEventListener("click", () => input.value = "");
+        } else {
+            button.addEventListener("click", () => insertAtCursor(key));
+        }
+
+        keyboard.appendChild(button);
+    });
+</script>
+
+</body>
+</html>
