@@ -31,8 +31,20 @@
         width: 100%;
         font-size: 20px;
         padding: 8px;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         box-sizing: border-box;
+    }
+
+    .feedback {
+        height: 24px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .attempts {
+        font-size: 14px;
+        margin-bottom: 10px;
+        color: #555;
     }
 
     .keyboard {
@@ -48,18 +60,17 @@
         border: none;
         background: #e3e7ee;
         cursor: pointer;
-        transition: 0.15s;
     }
 
     .key:hover {
         background: #d0d6df;
     }
 
-    .key.action {
+    .action {
         background: #ffd966;
     }
 
-    .key.action:hover {
+    .action:hover {
         background: #ffc107;
     }
 </style>
@@ -71,20 +82,28 @@
 
     <input type="text" id="answerInput" class="answer-input" placeholder="Введите ответ..." />
 
+    <div class="feedback" id="feedback"></div>
+    <div class="attempts" id="attempts">Попытка: 0</div>
+
     <div class="keyboard" id="keyboard"></div>
 </div>
 
 <script>
+    const correctAnswers = ["3", "-3", "±3"]; // можно расширять
+    let attemptCount = 0;
+
     const keys = [
         "7","8","9","+","-","±",
         "4","5","6","×","÷","√",
         "1","2","3","(",")","=",
         "0",".","x","y","x²","x₁",
-        "Очистить"
+        "Очистить","Проверить"
     ];
 
     const keyboard = document.getElementById("keyboard");
     const input = document.getElementById("answerInput");
+    const feedback = document.getElementById("feedback");
+    const attemptsDisplay = document.getElementById("attempts");
 
     function insertAtCursor(value) {
         const start = input.selectionStart;
@@ -96,6 +115,22 @@
         input.selectionStart = input.selectionEnd = start + value.length;
     }
 
+    function checkAnswer() {
+        attemptCount++;
+        attemptsDisplay.textContent = "Попытка: " + attemptCount;
+
+        const userAnswer = input.value.replace(/\s+/g, "");
+
+        if (correctAnswers.includes(userAnswer)) {
+            feedback.textContent = "✅ Верно!";
+            feedback.style.color = "green";
+            input.disabled = true;
+        } else {
+            feedback.textContent = "❌ Неверно, попробуйте ещё";
+            feedback.style.color = "red";
+        }
+    }
+
     keys.forEach(key => {
         const button = document.createElement("button");
         button.className = "key";
@@ -104,6 +139,9 @@
         if (key === "Очистить") {
             button.classList.add("action");
             button.addEventListener("click", () => input.value = "");
+        } else if (key === "Проверить") {
+            button.classList.add("action");
+            button.addEventListener("click", checkAnswer);
         } else {
             button.addEventListener("click", () => insertAtCursor(key));
         }
