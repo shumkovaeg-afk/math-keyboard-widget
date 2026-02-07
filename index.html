@@ -9,7 +9,8 @@
         background: #f4f6f8;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
+        padding-top: 20px;
         height: 100vh;
         margin: 0;
     }
@@ -20,6 +21,7 @@
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         width: 420px;
+        margin-bottom: 20px;
     }
 
     .question {
@@ -72,16 +74,11 @@
         background: #ffd966;
     }
 
-    .action:hover {
-        background: #ffc107;
-    }
-
     .disabled {
         opacity: 0.5;
         pointer-events: none;
     }
 
-    /* ДОБАВЛЕНО */
     .navigation {
         margin-top: 12px;
         text-align: center;
@@ -101,11 +98,56 @@
         background: #9ccc9c;
         cursor: not-allowed;
     }
+
+    /* === ДОБАВЛЕНО: редактор учителя === */
+    .teacher label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    .teacher input {
+        width: 100%;
+        padding: 6px;
+        margin-top: 4px;
+    }
+
+    .key-selector label {
+        display: inline-block;
+        margin: 4px;
+        font-size: 14px;
+    }
+
+    pre {
+        background: #f0f0f0;
+        padding: 10px;
+        font-size: 12px;
+        overflow: auto;
+    }
 </style>
 </head>
 <body>
 
-<div class="widget">
+<!-- === ДОБАВЛЕНО: РЕДАКТОР УЧИТЕЛЯ === -->
+<div class="widget teacher" id="teacherPanel">
+    <h3>Редактор задания (учитель)</h3>
+
+    <label>Текст задания</label>
+    <input id="tQuestion" placeholder="Решите: x² = 9">
+
+    <label>Правильные ответы (через запятую)</label>
+    <input id="tAnswers" placeholder="3, -3, ±3">
+
+    <label>Кнопки клавиатуры</label>
+    <div class="key-selector" id="keySelector"></div>
+
+    <button id="saveTask">Запустить как ученик</button>
+
+    <pre id="taskPreview"></pre>
+</div>
+
+<!-- === УЧЕНИК === -->
+<div class="widget" id="studentPanel" style="display:none;">
     <div class="question" id="question"></div>
 
     <input type="text" id="answerInput" class="answer-input" placeholder="Введите ответ..." />
@@ -119,147 +161,131 @@
 
     <div class="keyboard" id="keyboard"></div>
 
-    <!-- ДОБАВЛЕНО -->
     <div class="navigation">
         <button id="nextBtn" class="next-btn" disabled>Дальше</button>
     </div>
 </div>
 
 <script>
-    /* ДОБАВЛЕНО: серия заданий */
-    const tasks = [
-        {
-            question: "Решите: x² = 9",
-            answers: ["3", "-3", "±3"]
-        },
-        {
-            question: "Решите: x² = 4",
-            answers: ["2", "-2", "±2"]
-        }
-    ];
+/* === ДОБАВЛЕНО: полный набор кнопок === */
+const ALL_KEYS = [
+  "0","1","2","3","4","5","6","7","8","9",
+  "+","-","×","÷","=","±",
+  "x","y","a","b",
+  "²","³","⁴","₁","₂","₃",
+  "(",")",".",
+  "Очистить","Проверить"
+];
 
-    let currentTaskIndex = 0;
+let tasks = [];
+let currentTaskIndex = 0;
 
-    const maxAttempts = 3;
-    let attemptCount = 0;
-    let taskFinished = false;
-    let score = 0;
+const maxAttempts = 3;
+let attemptCount = 0;
+let taskFinished = false;
+let score = 0;
 
-    const scoring = {
-        1: 100,
-        2: 50,
-        3: 25
-    };
+const scoring = { 1:100, 2:50, 3:25 };
 
-    const keys = [
-        "7","8","9","+","-","±",
-        "4","5","6","×","÷","√",
-        "1","2","3","(",")","=",
-        "0",".","x","y","a","b",
-        "²","³","⁴","₁","₂","₃",
-        "Очистить","Проверить"
-    ];
+const keyboard = document.getElementById("keyboard");
+const input = document.getElementById("answerInput");
+const feedback = document.getElementById("feedback");
+const attemptsDisplay = document.getElementById("attempts");
+const scoreDisplay = document.getElementById("score");
+const questionEl = document.getElementById("question");
+const nextBtn = document.getElementById("nextBtn");
 
-    const keyboard = document.getElementById("keyboard");
-    const input = document.getElementById("answerInput");
-    const feedback = document.getElementById("feedback");
-    const attemptsDisplay = document.getElementById("attempts");
-    const scoreDisplay = document.getElementById("score");
-    const questionEl = document.getElementById("question");
-    const nextBtn = document.getElementById("nextBtn");
+/* === РЕДАКТОР === */
+const keySelector = document.getElementById("keySelector");
+ALL_KEYS.forEach(k => {
+  const label = document.createElement("label");
+  const cb = document.createElement("input");
+  cb.type = "checkbox";
+  cb.value = k;
+  cb.checked = true;
+  label.append(cb, " ", k);
+  keySelector.appendChild(label);
+});
 
-    function insertAtCursor(value) {
-        if (taskFinished) return;
+document.getElementById("saveTask").onclick = () => {
+  const task = {
+    question: document.getElementById("tQuestion").value,
+    answers: document.getElementById("tAnswers").value.split(",").map(a => a.trim()),
+    keyboard: [...keySelector.querySelectorAll("input:checked")].map(c => c.value)
+  };
 
-        const start = input.selectionStart;
-        const end = input.selectionEnd;
-        const text = input.value;
+  tasks = [task];
+  document.getElementById("taskPreview").textContent = JSON.stringify(task, null, 2);
 
-        input.value = text.substring(0, start) + value + text.substring(end);
-        input.focus();
-        input.selectionStart = input.selectionEnd = start + value.length;
+  document.getElementById("teacherPanel").style.display = "none";
+  document.getElementById("studentPanel").style.display = "block";
+
+  loadTask(0);
+};
+
+/* === УЧЕНИК === */
+function insertAtCursor(value) {
+  if (taskFinished) return;
+  input.value += value;
+}
+
+function disableKeyboard() {
+  taskFinished = true;
+  document.querySelectorAll(".key").forEach(b => b.classList.add("disabled"));
+  input.disabled = true;
+  nextBtn.disabled = false;
+}
+
+function checkAnswer() {
+  if (taskFinished) return;
+  attemptCount++;
+  attemptsDisplay.textContent = `Попытка: ${attemptCount} из ${maxAttempts}`;
+
+  const user = input.value.replace(/\s+/g,"");
+  if (tasks[currentTaskIndex].answers.includes(user)) {
+    const pts = scoring[attemptCount] || 0;
+    score += pts;
+    scoreDisplay.textContent = `Баллы: ${score}`;
+    feedback.textContent = `✅ Верно! +${pts}`;
+    feedback.style.color = "green";
+    disableKeyboard();
+  } else {
+    feedback.textContent = "❌ Неверно";
+    feedback.style.color = "red";
+    if (attemptCount >= maxAttempts) disableKeyboard();
+  }
+}
+
+function loadTask(i) {
+  const task = tasks[i];
+  questionEl.textContent = task.question;
+  input.value = "";
+  input.disabled = false;
+  feedback.textContent = "";
+  attemptCount = 0;
+  taskFinished = false;
+  nextBtn.disabled = true;
+  attemptsDisplay.textContent = `Попытка: 0 из ${maxAttempts}`;
+
+  keyboard.innerHTML = "";
+  task.keyboard.forEach(key => {
+    const btn = document.createElement("button");
+    btn.className = "key";
+    btn.textContent = key;
+
+    if (key === "Очистить") {
+      btn.classList.add("action");
+      btn.onclick = () => input.value = "";
+    } else if (key === "Проверить") {
+      btn.classList.add("action");
+      btn.onclick = checkAnswer;
+    } else {
+      btn.onclick = () => insertAtCursor(key);
     }
 
-    function disableKeyboard() {
-        taskFinished = true;
-        document.querySelectorAll(".key").forEach(btn => btn.classList.add("disabled"));
-        input.disabled = true;
-        nextBtn.disabled = false; // ДОБАВЛЕНО
-    }
-
-    function checkAnswer() {
-        if (taskFinished) return;
-
-        attemptCount++;
-        attemptsDisplay.textContent = `Попытка: ${attemptCount} из ${maxAttempts}`;
-
-        const userAnswer = input.value.replace(/\s+/g, "");
-        const correctAnswers = tasks[currentTaskIndex].answers;
-
-        if (correctAnswers.includes(userAnswer)) {
-            const earned = scoring[attemptCount] || 0;
-            score += earned;
-            scoreDisplay.textContent = `Баллы: ${score}`;
-            feedback.textContent = `✅ Верно! +${earned} баллов`;
-            feedback.style.color = "green";
-            disableKeyboard();
-        } else {
-            if (attemptCount >= maxAttempts) {
-                feedback.textContent = "❌ Попытки закончились";
-                feedback.style.color = "red";
-                disableKeyboard();
-            } else {
-                feedback.textContent = "❌ Неверно, попробуйте ещё";
-                feedback.style.color = "red";
-            }
-        }
-    }
-
-    function loadTask(index) {
-        const task = tasks[index];
-        questionEl.textContent = task.question;
-        input.value = "";
-        input.disabled = false;
-        feedback.textContent = "";
-        attemptCount = 0;
-        taskFinished = false;
-        attemptsDisplay.textContent = `Попытка: 0 из ${maxAttempts}`;
-        nextBtn.disabled = true;
-
-        document.querySelectorAll(".key").forEach(btn => btn.classList.remove("disabled"));
-    }
-
-    nextBtn.addEventListener("click", () => {
-        currentTaskIndex++;
-        if (currentTaskIndex < tasks.length) {
-            loadTask(currentTaskIndex);
-        } else {
-            feedback.textContent = "🎉 Серия заданий завершена!";
-            nextBtn.disabled = true;
-        }
-    });
-
-    keys.forEach(key => {
-        const button = document.createElement("button");
-        button.className = "key";
-        button.textContent = key;
-
-        if (key === "Очистить") {
-            button.classList.add("action");
-            button.addEventListener("click", () => input.value = "");
-        } else if (key === "Проверить") {
-            button.classList.add("action");
-            button.addEventListener("click", checkAnswer);
-        } else {
-            button.addEventListener("click", () => insertAtCursor(key));
-        }
-
-        keyboard.appendChild(button);
-    });
-
-    // ЗАГРУЗКА ПЕРВОГО ЗАДАНИЯ
-    loadTask(0);
+    keyboard.appendChild(btn);
+  });
+}
 </script>
-
 </body>
 </html>
