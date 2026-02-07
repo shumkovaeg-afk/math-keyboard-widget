@@ -3,289 +3,194 @@
 <head>
 <meta charset="UTF-8" />
 <title>Math Keyboard Widget</title>
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f4f6f8;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        padding-top: 20px;
-        height: 100vh;
-        margin: 0;
-    }
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
 
-    .widget {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        width: 420px;
-        margin-bottom: 20px;
-    }
+.widget {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 420px;
+}
 
-    .question {
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
+.question { font-size: 18px; margin-bottom: 10px; }
 
-    .answer-input {
-        width: 100%;
-        font-size: 20px;
-        padding: 8px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-    }
+.answer-input {
+  width: 100%;
+  font-size: 20px;
+  padding: 8px;
+  margin-bottom: 10px;
+}
 
-    .feedback {
-        height: 24px;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
+.feedback {
+  height: 24px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
 
-    .stats {
-        font-size: 14px;
-        margin-bottom: 10px;
-        color: #555;
-        display: flex;
-        justify-content: space-between;
-    }
+.stats {
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
 
-    .keyboard {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 6px;
-    }
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
 
-    .key {
-        padding: 10px;
-        font-size: 18px;
-        border-radius: 8px;
-        border: none;
-        background: #e3e7ee;
-        cursor: pointer;
-    }
+.key {
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 8px;
+  border: none;
+  background: #e3e7ee;
+  cursor: pointer;
+}
 
-    .key:hover {
-        background: #d0d6df;
-    }
+.key:hover { background: #d0d6df; }
 
-    .action {
-        background: #ffd966;
-    }
+.action { background: #ffd966; }
 
-    .disabled {
-        opacity: 0.5;
-        pointer-events: none;
-    }
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
 
-    .navigation {
-        margin-top: 12px;
-        text-align: center;
-    }
+.navigation { margin-top: 12px; text-align: center; }
 
-    .next-btn {
-        padding: 10px 20px;
-        font-size: 16px;
-        border-radius: 8px;
-        border: none;
-        background: #4caf50;
-        color: white;
-        cursor: pointer;
-    }
+.next-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background: #4caf50;
+  color: white;
+  cursor: pointer;
+}
 
-    .next-btn:disabled {
-        background: #9ccc9c;
-        cursor: not-allowed;
-    }
+.next-btn:disabled {
+  background: #9ccc9c;
+  cursor: not-allowed;
+}
 
-    /* === ДОБАВЛЕНО: редактор учителя === */
-    .teacher label {
-        display: block;
-        margin-top: 10px;
-        font-weight: bold;
-    }
+/* === РЕДАКТОР === */
+.teacher label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
 
-    .teacher input {
-        width: 100%;
-        padding: 6px;
-        margin-top: 4px;
-    }
+.teacher input {
+  width: 100%;
+  padding: 6px;
+  margin-top: 4px;
+}
 
-    .key-selector label {
-        display: inline-block;
-        margin: 4px;
-        font-size: 14px;
-    }
+.key-selector label {
+  display: inline-block;
+  margin: 4px;
+  font-size: 14px;
+}
 
-    pre {
-        background: #f0f0f0;
-        padding: 10px;
-        font-size: 12px;
-        overflow: auto;
-    }
+pre {
+  background: #f0f0f0;
+  padding: 10px;
+  font-size: 12px;
+}
 </style>
 </head>
+
 <body>
 
-<!-- === ДОБАВЛЕНО: РЕДАКТОР УЧИТЕЛЯ === -->
+<!-- === РЕДАКТОР УЧИТЕЛЯ === -->
 <div class="widget teacher" id="teacherPanel">
-    <h3>Редактор задания (учитель)</h3>
+  <h3>Редактор заданий</h3>
 
-    <label>Текст задания</label>
-    <input id="tQuestion" placeholder="Решите: x² = 9">
+  <label>Текст задания</label>
+  <input id="tQuestion" placeholder="Решите: x² = 9">
 
-    <label>Правильные ответы (через запятую)</label>
-    <input id="tAnswers" placeholder="3, -3, ±3">
+  <label>Правильные ответы (через запятую)</label>
+  <input id="tAnswers" placeholder="3, -3, ±3">
 
-    <label>Кнопки клавиатуры</label>
-    <div class="key-selector" id="keySelector"></div>
+  <label>Кнопки клавиатуры</label>
+  <div class="key-selector" id="keySelector"></div>
 
-    <button id="saveTask">Запустить как ученик</button>
+  <button id="addTask">Добавить задание</button>
+  <button id="startSeries">Начать серию</button>
 
-    <pre id="taskPreview"></pre>
+  <pre id="taskPreview"></pre>
 </div>
 
 <!-- === УЧЕНИК === -->
 <div class="widget" id="studentPanel" style="display:none;">
-    <div class="question" id="question"></div>
+  <div class="question" id="question"></div>
 
-    <input type="text" id="answerInput" class="answer-input" placeholder="Введите ответ..." />
+  <input id="answerInput" class="answer-input" placeholder="Введите ответ">
 
-    <div class="feedback" id="feedback"></div>
+  <div class="feedback" id="feedback"></div>
 
-    <div class="stats">
-        <div id="attempts">Попытка: 0 из 3</div>
-        <div id="score">Баллы: 0</div>
-    </div>
+  <div class="stats">
+    <div id="attempts">Попытка: 0 из 3</div>
+    <div id="score">Баллы: 0</div>
+  </div>
 
-    <div class="keyboard" id="keyboard"></div>
+  <div class="keyboard" id="keyboard"></div>
 
-    <div class="navigation">
-        <button id="nextBtn" class="next-btn" disabled>Дальше</button>
-    </div>
+  <div class="navigation">
+    <button id="nextBtn" class="next-btn" disabled>Дальше</button>
+  </div>
 </div>
 
 <script>
-/* === ДОБАВЛЕНО: полный набор кнопок === */
+/* === НАБОР КНОПОК === */
 const ALL_KEYS = [
-  "0","1","2","3","4","5","6","7","8","9",
-  "+","-","×","÷","=","±",
-  "x","y","a","b",
-  "²","³","⁴","₁","₂","₃",
-  "(",")",".",
-  "Очистить","Проверить"
+ "0","1","2","3","4","5","6","7","8","9",
+ "+","-","×","÷","=","±",
+ "x","y","a","b",
+ "²","³","⁴","₁","₂","₃",
+ "(",")",".",
+ "Очистить","Проверить"
 ];
+
+const scoring = {1:100, 2:50, 3:25};
+const maxAttempts = 3;
 
 let tasks = [];
 let currentTaskIndex = 0;
-
-const maxAttempts = 3;
 let attemptCount = 0;
 let taskFinished = false;
 let score = 0;
 
-const scoring = { 1:100, 2:50, 3:25 };
-
+/* === DOM === */
 const keyboard = document.getElementById("keyboard");
 const input = document.getElementById("answerInput");
 const feedback = document.getElementById("feedback");
-const attemptsDisplay = document.getElementById("attempts");
-const scoreDisplay = document.getElementById("score");
+const attemptsEl = document.getElementById("attempts");
+const scoreEl = document.getElementById("score");
 const questionEl = document.getElementById("question");
 const nextBtn = document.getElementById("nextBtn");
 
 /* === РЕДАКТОР === */
 const keySelector = document.getElementById("keySelector");
 ALL_KEYS.forEach(k => {
-  const label = document.createElement("label");
-  const cb = document.createElement("input");
-  cb.type = "checkbox";
-  cb.value = k;
-  cb.checked = true;
-  label.append(cb, " ", k);
-  keySelector.appendChild(label);
-});
-
-document.getElementById("saveTask").onclick = () => {
-  const task = {
-    question: document.getElementById("tQuestion").value,
-    answers: document.getElementById("tAnswers").value.split(",").map(a => a.trim()),
-    keyboard: [...keySelector.querySelectorAll("input:checked")].map(c => c.value)
-  };
-
-  tasks = [task];
-  document.getElementById("taskPreview").textContent = JSON.stringify(task, null, 2);
-
-  document.getElementById("teacherPanel").style.display = "none";
-  document.getElementById("studentPanel").style.display = "block";
-
-  loadTask(0);
-};
-
-/* === УЧЕНИК === */
-function insertAtCursor(value) {
-  if (taskFinished) return;
-  input.value += value;
-}
-
-function disableKeyboard() {
-  taskFinished = true;
-  document.querySelectorAll(".key").forEach(b => b.classList.add("disabled"));
-  input.disabled = true;
-  nextBtn.disabled = false;
-}
-
-function checkAnswer() {
-  if (taskFinished) return;
-  attemptCount++;
-  attemptsDisplay.textContent = `Попытка: ${attemptCount} из ${maxAttempts}`;
-
-  const user = input.value.replace(/\s+/g,"");
-  if (tasks[currentTaskIndex].answers.includes(user)) {
-    const pts = scoring[attemptCount] || 0;
-    score += pts;
-    scoreDisplay.textContent = `Баллы: ${score}`;
-    feedback.textContent = `✅ Верно! +${pts}`;
-    feedback.style.color = "green";
-    disableKeyboard();
-  } else {
-    feedback.textContent = "❌ Неверно";
-    feedback.style.color = "red";
-    if (attemptCount >= maxAttempts) disableKeyboard();
-  }
-}
-
-function loadTask(i) {
-  const task = tasks[i];
-  questionEl.textContent = task.question;
-  input.value = "";
-  input.disabled = false;
-  feedback.textContent = "";
-  attemptCount = 0;
-  taskFinished = false;
-  nextBtn.disabled = true;
-  attemptsDisplay.textContent = `Попытка: 0 из ${maxAttempts}`;
-
-  keyboard.innerHTML = "";
-  task.keyboard.forEach(key => {
-    const btn = document.createElement("button");
-    btn.className = "key";
-    btn.textContent = key;
-
-    if (key === "Очистить") {
-      btn.classList.add("action");
-      btn.onclick = () => input.value = "";
-    } else if (key === "Проверить") {
-      btn.classList.add("action");
-      btn.onclick = checkAnswer;
-    } else {
-      btn.onclick = () => insertAtCursor(key);
-    }
-
-    keyboard.appendChild(btn);
-  });
-}
-</script>
-</body>
-</html>
+ const label = document.createElement("label");
+ const cb = document.createElement("input");
+ cb.type = "checkbox";
+ cb.value = k;
+ cb.checked = true;
+ label.append(cb, " ", k);
+ keySelector.appendChild(label);
+})
