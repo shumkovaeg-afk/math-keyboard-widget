@@ -266,7 +266,10 @@ document.getElementById("startSeries").onclick = () => {
   }
 
   // 🔀 выбираем случайные задания
-  tasks = getRandomTasks(tasks, count);
+   let studentTasks = [];
+
+ const studentTasks = getRandomTasks(tasks, count);
+
 
   teacherPanel.style.display = "none";
   studentPanel.style.display = "block";
@@ -367,7 +370,12 @@ function checkAnswer() {
 }
 
 function loadTask(i) {
-  const t = tasks[i];
+  const t = studentTasks[i];
+  if (!t) {
+    questionEl.textContent = "Ошибка загрузки задания";
+    return;
+  }
+
   questionEl.textContent = t.question;
   input.value = "";
   input.disabled = false;
@@ -376,12 +384,13 @@ function loadTask(i) {
   taskFinished = false;
   nextBtn.disabled = true;
   attemptsEl.textContent = `Попытка: 0 из ${maxAttempts}`;
-  keyboard.innerHTML = "";
 
+  keyboard.innerHTML = "";
   t.keyboard.forEach(k => {
     const b = document.createElement("button");
     b.className = "key";
     b.textContent = k;
+
     if (k === "Очистить") {
       b.classList.add("action");
       b.onclick = () => input.value = "";
@@ -391,13 +400,15 @@ function loadTask(i) {
     } else {
       b.onclick = () => insertAtCursor(k);
     }
+
     keyboard.appendChild(b);
   });
 }
 
+
 nextBtn.onclick = () => {
   currentTaskIndex++;
-  if (currentTaskIndex < tasks.length) {
+  if (currentTaskIndex < studentTasks.length) {
     loadTask(currentTaskIndex);
   } else {
     questionEl.textContent = "🎉 Серия завершена!";
@@ -406,6 +417,7 @@ nextBtn.onclick = () => {
     nextBtn.disabled = true;
   }
 };
+
 </script>
 </body>
 </html>
