@@ -155,15 +155,16 @@ pre {
 </div>
 
 <script>
-/* === НАБОР КНОПОК === */
-const ALL_KEYS = [
- "0","1","2","3","4","5","6","7","8","9",
- "+","-","×","÷","=","±",
- "x","y","a","b",
- "²","³","⁴","₁","₂","₃",
- "(",")",".",
- "Очистить","Проверить"
-];
+/* === КЛАВИАТУРНЫЕ БЛОКИ === */
+const KEY_GROUPS = {
+  digits: { title: "Цифровой блок", keys: ["0","1","2","3","4","5","6","7","8","9"] },
+  latin: { title: "Латинские буквы", keys: ["x","y","a","b","c","d","f"] },
+  superscript: { title: "Верхний индекс", keys: ["⁰","¹","²","³","⁴","⁵","⁶","⁷","⁸","⁹"] },
+  subscript: { title: "Нижний индекс", keys: ["₀","₁","₂","₃","₄"] },
+  mathOps: { title: "Математические знаки", keys: ["+","−","±","×","÷","(",")","[","]","="] },
+  mathSymbols: { title: "Математические символы", keys: ["π","∞","√","°","∥","⟂","∠"] },
+  actions: { title: "Действия", keys: ["Очистить","Проверить"] }
+};
 
 const scoring = {1:100, 2:50, 3:25};
 const maxAttempts = 3;
@@ -185,109 +186,131 @@ const nextBtn = document.getElementById("nextBtn");
 
 /* === РЕДАКТОР === */
 const keySelector = document.getElementById("keySelector");
-ALL_KEYS.forEach(k => {
- const label = document.createElement("label");
- const cb = document.createElement("input");
- cb.type = "checkbox";
- cb.value = k;
- cb.checked = true;
- label.append(cb, " ", k);
- keySelector.appendChild(label);
-});
+
+for (const groupId in KEY_GROUPS) {
+  const group = KEY_GROUPS[groupId];
+
+  const wrapper = document.createElement("div");
+  wrapper.style.marginBottom = "8px";
+
+  const title = document.createElement("strong");
+  title.textContent = group.title;
+
+  const presetBtn = document.createElement("button");
+  presetBtn.textContent = "Включить всё";
+  presetBtn.style.marginLeft = "10px";
+  presetBtn.onclick = () => {
+    wrapper.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = true);
+  };
+
+  wrapper.append(title, presetBtn, document.createElement("br"));
+
+  group.keys.forEach(k => {
+    const label = document.createElement("label");
+    label.style.marginRight = "6px";
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.value = k;
+    cb.checked = true;
+    label.append(cb, " ", k);
+    wrapper.appendChild(label);
+  });
+
+  keySelector.appendChild(wrapper);
+}
 
 document.getElementById("addTask").onclick = () => {
- const task = {
-   question: tQuestion.value,
-   answers: tAnswers.value.split(",").map(a => a.trim()),
-   keyboard: [...keySelector.querySelectorAll("input:checked")].map(c => c.value)
- };
- tasks.push(task);
- taskPreview.textContent = JSON.stringify(tasks, null, 2);
- tQuestion.value = "";
- tAnswers.value = "";
+  const task = {
+    question: tQuestion.value,
+    answers: tAnswers.value.split(",").map(a => a.trim()),
+    keyboard: [...keySelector.querySelectorAll("input:checked")].map(c => c.value)
+  };
+  tasks.push(task);
+  taskPreview.textContent = JSON.stringify(tasks, null, 2);
+  tQuestion.value = "";
+  tAnswers.value = "";
 };
 
 document.getElementById("startSeries").onclick = () => {
- if (!tasks.length) return alert("Добавьте хотя бы одно задание");
- teacherPanel.style.display = "none";
- studentPanel.style.display = "block";
- score = 0;
- scoreEl.textContent = "Баллы: 0";
- currentTaskIndex = 0;
- loadTask(0);
+  if (!tasks.length) return alert("Добавьте хотя бы одно задание");
+  teacherPanel.style.display = "none";
+  studentPanel.style.display = "block";
+  score = 0;
+  scoreEl.textContent = "Баллы: 0";
+  currentTaskIndex = 0;
+  loadTask(0);
 };
 
 /* === УЧЕНИК === */
 function insertAtCursor(v) {
- if (taskFinished) return;
- input.value += v;
+  if (!taskFinished) input.value += v;
 }
 
 function disableTask() {
- taskFinished = true;
- input.disabled = true;
- nextBtn.disabled = false;
- document.querySelectorAll(".key").forEach(b => b.classList.add("disabled"));
+  taskFinished = true;
+  input.disabled = true;
+  nextBtn.disabled = false;
+  document.querySelectorAll(".key").forEach(b => b.classList.add("disabled"));
 }
 
 function checkAnswer() {
- if (taskFinished) return;
- attemptCount++;
- attemptsEl.textContent = `Попытка: ${attemptCount} из ${maxAttempts}`;
- const user = input.value.replace(/\s+/g,"");
- if (tasks[currentTaskIndex].answers.includes(user)) {
-   const pts = scoring[attemptCount] || 0;
-   score += pts;
-   scoreEl.textContent = `Баллы: ${score}`;
-   feedback.textContent = `✅ Верно! +${pts}`;
-   feedback.style.color = "green";
-   disableTask();
- } else {
-   feedback.textContent = "❌ Неверно";
-   feedback.style.color = "red";
-   if (attemptCount >= maxAttempts) disableTask();
- }
+  if (taskFinished) return;
+  attemptCount++;
+  attemptsEl.textContent = `Попытка: ${attemptCount} из ${maxAttempts}`;
+  const user = input.value.replace(/\s+/g,"");
+  if (tasks[currentTaskIndex].answers.includes(user)) {
+    const pts = scoring[attemptCount] || 0;
+    score += pts;
+    scoreEl.textContent = `Баллы: ${score}`;
+    feedback.textContent = `✅ Верно! +${pts}`;
+    feedback.style.color = "green";
+    disableTask();
+  } else {
+    feedback.textContent = "❌ Неверно";
+    feedback.style.color = "red";
+    if (attemptCount >= maxAttempts) disableTask();
+  }
 }
 
 function loadTask(i) {
- const t = tasks[i];
- questionEl.textContent = t.question;
- input.value = "";
- input.disabled = false;
- feedback.textContent = "";
- attemptCount = 0;
- taskFinished = false;
- nextBtn.disabled = true;
- attemptsEl.textContent = `Попытка: 0 из ${maxAttempts}`;
+  const t = tasks[i];
+  questionEl.textContent = t.question;
+  input.value = "";
+  input.disabled = false;
+  feedback.textContent = "";
+  attemptCount = 0;
+  taskFinished = false;
+  nextBtn.disabled = true;
+  attemptsEl.textContent = `Попытка: 0 из ${maxAttempts}`;
+  keyboard.innerHTML = "";
 
- keyboard.innerHTML = "";
- t.keyboard.forEach(k => {
-   const b = document.createElement("button");
-   b.className = "key";
-   b.textContent = k;
-   if (k === "Очистить") {
-     b.classList.add("action");
-     b.onclick = () => input.value = "";
-   } else if (k === "Проверить") {
-     b.classList.add("action");
-     b.onclick = checkAnswer;
-   } else {
-     b.onclick = () => insertAtCursor(k);
-   }
-   keyboard.appendChild(b);
- });
+  t.keyboard.forEach(k => {
+    const b = document.createElement("button");
+    b.className = "key";
+    b.textContent = k;
+    if (k === "Очистить") {
+      b.classList.add("action");
+      b.onclick = () => input.value = "";
+    } else if (k === "Проверить") {
+      b.classList.add("action");
+      b.onclick = checkAnswer;
+    } else {
+      b.onclick = () => insertAtCursor(k);
+    }
+    keyboard.appendChild(b);
+  });
 }
 
 nextBtn.onclick = () => {
- currentTaskIndex++;
- if (currentTaskIndex < tasks.length) {
-   loadTask(currentTaskIndex);
- } else {
-   questionEl.textContent = "🎉 Серия завершена!";
-   keyboard.innerHTML = "";
-   feedback.textContent = `Итог: ${score} баллов`;
-   nextBtn.disabled = true;
- }
+  currentTaskIndex++;
+  if (currentTaskIndex < tasks.length) {
+    loadTask(currentTaskIndex);
+  } else {
+    questionEl.textContent = "🎉 Серия завершена!";
+    keyboard.innerHTML = "";
+    feedback.textContent = `Итог: ${score} баллов`;
+    nextBtn.disabled = true;
+  }
 };
 </script>
 </body>
