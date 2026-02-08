@@ -129,6 +129,9 @@ pre {
   <div class="key-selector" id="keySelector"></div>
 
   <button id="addTask">Добавить задание</button>
+ <label>Сколько заданий выдать ученику</label>
+<input id="taskCount" type="number" min="1" placeholder="Например: 5">
+
   <button id="startSeries">Начать серию</button>
 
 <h4>Предварительный просмотр заданий</h4>
@@ -249,12 +252,40 @@ document.getElementById("startSeries").onclick = () => {
   studentPanel.style.display = "block";
   score = 0;
   scoreEl.textContent = "Баллы: 0";
+ document.getElementById("startSeries").onclick = () => {
+  if (!tasks.length) return alert("Добавьте хотя бы одно задание");
+
+  const count = parseInt(taskCount.value, 10);
+
+  if (!count || count < 1) {
+    return alert("Укажите количество заданий для ученика");
+  }
+
+  if (count > tasks.length) {
+    return alert("Заданий меньше, чем вы хотите выдать");
+  }
+
+  // 🔀 выбираем случайные задания
+  tasks = getRandomTasks(tasks, count);
+
+  teacherPanel.style.display = "none";
+  studentPanel.style.display = "block";
+
+  score = 0;
+  scoreEl.textContent = "Баллы: 0";
   currentTaskIndex = 0;
+
   loadTask(0);
+};
+
 };
 
 const tasksPreview = document.getElementById("tasksPreview");
 
+function getRandomTasks(allTasks, count) {
+  const shuffled = [...allTasks].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
 
 
 function renderTasksPreview() {
