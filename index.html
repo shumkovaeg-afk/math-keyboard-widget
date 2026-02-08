@@ -131,6 +131,9 @@ pre {
   <button id="addTask">Добавить задание</button>
   <button id="startSeries">Начать серию</button>
 
+<h4>Предварительный просмотр заданий</h4>
+<div id="tasksPreview"></div>
+
   <pre id="taskPreview"></pre>
 </div>
 
@@ -161,7 +164,7 @@ const KEY_GROUPS = {
   latin: { title: "Латинские буквы", keys: ["x","y","a","b","c","d","f"] },
   superscript: { title: "Верхний индекс", keys: ["⁰","¹","²","³","⁴","⁵","⁶","⁷","⁸","⁹"] },
   subscript: { title: "Нижний индекс", keys: ["₀","₁","₂","₃","₄"] },
-  mathOps: { title: "Математические знаки", keys: ["+","−","±","×","÷","(",")","[","]","=","≤","≥"] },
+  mathOps: { title: "Математические знаки", keys: ["+","−","±","×","÷","(",")","[","]","="] },
   mathSymbols: { title: "Математические символы", keys: ["π","∞","√","°","∥","⟂","∠"] },
   actions: { title: "Действия", keys: ["Очистить","Проверить"] }
 };
@@ -225,11 +228,20 @@ document.getElementById("addTask").onclick = () => {
     answers: tAnswers.value.split(",").map(a => a.trim()),
     keyboard: [...keySelector.querySelectorAll("input:checked")].map(c => c.value)
   };
-  tasks.push(task);
-  taskPreview.textContent = JSON.stringify(tasks, null, 2);
+
+  if (editingTaskIndex !== null) {
+    tasks[editingTaskIndex] = task;
+    editingTaskIndex = null;
+  } else {
+    tasks.push(task);
+  }
+
+  renderTasksPreview();
+
   tQuestion.value = "";
   tAnswers.value = "";
 };
+
 
 document.getElementById("startSeries").onclick = () => {
   if (!tasks.length) return alert("Добавьте хотя бы одно задание");
@@ -240,6 +252,57 @@ document.getElementById("startSeries").onclick = () => {
   currentTaskIndex = 0;
   loadTask(0);
 };
+
+const tasksPreview = document.getElementById("tasksPreview");
+
+
+
+function renderTasksPreview() {
+  tasksPreview.innerHTML = "";
+
+  tasks.forEach((task, index) => {
+    const div = document.createElement("div");
+    div.style.border = "1px solid #ccc";
+    div.style.borderRadius = "8px";
+    div.style.padding = "8px";
+    div.style.marginBottom = "8px";
+    div.style.fontSize = "14px";
+
+    div.innerHTML = `
+      <b>Задание ${index + 1}</b><br>
+      <b>Вопрос:</b> ${task.question}<br>
+      <b>Ответы:</b> ${task.answers.join(", ")}<br>
+      <b>Клавиатура:</b> ${task.keyboard.join(" ")}<br><br>
+      <button onclick="editTask(${index})">✏️ Редактировать</button>
+      <button onclick="deleteTask(${index})">🗑 Удалить</button>
+    `;
+
+    tasksPreview.appendChild(div);
+  });
+}
+
+function deleteTask(index) {
+  if (!confirm("Удалить задание?")) return;
+  tasks.splice(index, 1);
+  renderTasksPreview();
+}
+
+let editingTaskIndex = null;
+
+function editTask(index) {
+  const task = tasks[index];
+  editingTaskIndex = index;
+
+  tQuestion.value = task.question;
+  tAnswers.value = task.answers.join(", ");
+
+  // восстановить чекбоксы клавиатуры
+  [...keySelector.querySelectorAll("input")].forEach(cb => {
+    cb.checked = task.keyboard.includes(cb.value);
+  });
+}
+
+
 
 /* === УЧЕНИК === */
 function insertAtCursor(v) {
