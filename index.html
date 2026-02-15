@@ -5,9 +5,7 @@
 <title>Math Keyboard Widget</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 body {
   font-family: Arial, sans-serif;
   background: #f4f6f8;
@@ -16,7 +14,7 @@ body {
   display: flex;
   gap: 20px;
   align-items: flex-start;
-  justify-content: center; /* Центрирование для одиночного режима */
+  justify-content: center;
 }
 .widget {
   background: white;
@@ -26,49 +24,18 @@ body {
 }
 
 /* === РЕДАКТОР УЧИТЕЛЯ === */
-.teacher {
-  width: 100%;
-  max-width: 1400px;
-}
-.teacher-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-.teacher-column {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.teacher-column h3 {
-  margin: 0 0 10px 0;
-  border-bottom: 2px solid #4caf50;
-  padding-bottom: 10px;
-}
-.level-selector {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-}
+.teacher { width: 100%; max-width: 1400px; }
+.teacher-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.teacher-column { display: flex; flex-direction: column; gap: 15px; }
+.teacher-column h3 { margin: 0 0 10px 0; border-bottom: 2px solid #4caf50; padding-bottom: 10px; }
+.level-selector { display: flex; gap: 10px; margin-bottom: 15px; }
 .level-btn {
-  flex: 1;
-  padding: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.3s;
+  flex: 1; padding: 12px; font-size: 16px; font-weight: bold;
+  border: 2px solid #ddd; border-radius: 8px; background: white;
+  cursor: pointer; transition: all 0.3s;
 }
-.level-btn:hover {
-  border-color: #4caf50;
-}
-.level-btn.active {
-  background: #4caf50;
-  color: white;
-  border-color: #4caf50;
-}
+.level-btn:hover { border-color: #4caf50; }
+.level-btn.active { background: #4caf50; color: white; border-color: #4caf50; }
 .level-btn.level-1 { border-left: 4px solid #ff9800; }
 .level-btn.level-2 { border-left: 4px solid #2196f3; }
 .level-btn.level-3 { border-left: 4px solid #f44336; }
@@ -77,117 +44,27 @@ body {
 .level-btn.active.level-3 { background: #f44336; }
 
 /* === ЛЕВАЯ КОЛОНКА: КЛАВИАТУРА === */
-.keyboard-settings {
-  max-height: 600px;
-  overflow-y: auto;
-  padding-right: 10px;
-}
-.key-group {
-  margin-bottom: 15px;padding: 12px;
-  background: #f9f9f9;
-  border-radius: 8px;
-  border-left: 4px solid #4caf50;
-}
-.key-group strong {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
-}
-.preset-btn {
-  padding: 6px 12px;
-  font-size: 12px;
-  background: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 8px;
-}
-.key-selector label {
-  display: inline-block;
-  margin: 4px 8px 4px 0;
-  font-size: 13px;
-  padding: 4px 8px;
-  background: white;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.key-selector label:hover {
-  background: #e8f5e9;
-}
+.keyboard-settings { max-height: 600px; overflow-y: auto; padding-right: 10px; }
+.key-group { margin-bottom: 15px; padding: 12px; background: #f9f9f9; border-radius: 8px; border-left: 4px solid #4caf50; }
+.key-group strong { display: block; margin-bottom: 8px; font-size: 14px; }
+.preset-btn { padding: 6px 12px; font-size: 12px; background: #4caf50; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 8px; }
+.key-selector label { display: inline-block; margin: 4px 8px 4px 0; font-size: 13px; padding: 4px 8px; background: white; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+.key-selector label:hover { background: #e8f5e9; }
 
 /* === ПРАВАЯ КОЛОНКА: ЗАДАНИЯ === */
-.tasks-editor {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.task-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.task-input-group label {
-  font-weight: bold;
-  font-size: 14px;
-  color: #333;
-}
-.task-input-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-}
-.button-group {
-  display: flex;
-  gap: 10px;
-}
-.button-group button {
-  flex: 1;
-  padding: 12px;
-  font-size: 14px;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
+.tasks-editor { display: flex; flex-direction: column; gap: 12px; }
+.task-input-group { display: flex; flex-direction: column; gap: 6px; }
+.task-input-group label { font-weight: bold; font-size: 14px; color: #333; }
+.task-input-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+.button-group { display: flex; gap: 10px; }
+.button-group button { flex: 1; padding: 12px; font-size: 14px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: all 0.3s; }
 #addTask { background: #4caf50; color: white; }
 #addTask:hover { background: #45a049; }
 #cancelEdit { background: #999; color: white; }
-.tasks-preview {
-  max-height: 400px;
-  overflow-y: auto;
-  padding: 10px;
-  background: #f5f5f5;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-}
-.task-item {
-  background: white;
-  border-left: 4px solid #4caf50;
-  border-radius: 6px;
-  padding: 10px;
-  margin-bottom: 8px;
-  font-size: 13px;
-}
-.task-item-header {
-  font-weight: bold;
-  margin-bottom: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.task-level-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: bold;
-  color: white;
-}
+.tasks-preview { max-height: 400px; overflow-y: auto; padding: 10px; background: #f5f5f5; border-radius: 8px; border: 1px solid #ddd; }
+.task-item { background: white; border-left: 4px solid #4caf50; border-radius: 6px; padding: 10px; margin-bottom: 8px; font-size: 13px; }
+.task-item-header { font-weight: bold; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+.task-level-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; color: white; }
 .task-level-badge.level-1 { background: #ff9800; }
 .task-level-badge.level-2 { background: #2196f3; }
 .task-level-badge.level-3 { background: #f44336; }
@@ -196,216 +73,75 @@ body {
 .edit-btn { background: #2196f3; color: white; }
 .delete-btn { background: #f44336; color: white; }
 
-.start-series-group {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
-.start-series-group input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-}
-.start-series-group button {
-  flex: 1;
-  padding: 12px;
-  font-size: 14px;
-  font-weight: bold;
-  background: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
+.start-series-group { display: flex; gap: 10px; margin-top: 15px; }
+.start-series-group input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
+.start-series-group button { flex: 1; padding: 12px; font-size: 14px; font-weight: bold; background: #4caf50; color: white; border: none; border-radius: 6px; cursor: pointer; }
 
 /* === ЭКРАН УЧЕНИКА === */
-.student-level-selector {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  gap: 20px;
-}
-.student-level-buttons {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.student-level-btn {
-  padding: 20px 40px;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  color: white;
-  transition: all 0.3s;
-  min-width: 150px;
-}
+.student-level-selector { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px; gap: 20px; text-align: center;}
+.student-level-buttons { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.student-level-btn { padding: 20px 40px; font-size: 18px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; color: white; transition: all 0.3s; min-width: 180px; position: relative;}
 .student-level-btn.level-1 { background: #ff9800; }
 .student-level-btn.level-2 { background: #2196f3; }
 .student-level-btn.level-3 { background: #f44336; }
+/* Стиль для пройденного уровня */
+.student-level-btn.completed { background: #ccc !important; cursor: not-allowed; opacity: 0.8; color: #666; }
+.student-level-btn.completed::after { content: "✅"; position: absolute; top: -10px; right: -10px; background: white; border-radius: 50%; padding: 5px; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 
-.student-task-screen {
-  width: 420px;
-  position: relative;
+#finishGameBtn {
+    margin-top: 30px;
+    padding: 15px 30px;
+    font-size: 20px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #4caf50, #81c784);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    animation: pulse 2s infinite;
 }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+.student-task-screen { width: 420px; position: relative; }
 .question { margin-bottom: 10px; }
-.answer-input {
-  width: 100%;
-  font-size: 20px;
-  padding: 8px;
-  margin-bottom: 10px;
-}
-.feedback {
-  height: 24px;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-.stats {
-  font-size: 14px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-}
-.keyboard {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 6px;
-  margin-bottom: 12px;
-}
-.key {
-  padding: 10px;
-  font-size: 18px;
-  border-radius: 8px;
-  border: none;
-  background: #e3e7ee;
-  cursor: pointer;
-  transition: all 0.2s;
-}
+.answer-input { width: 100%; font-size: 20px; padding: 8px; margin-bottom: 10px; }
+.feedback { height: 24px; margin-bottom: 10px; font-weight: bold; }
+.stats { font-size: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+.keyboard { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 12px; }
+.key { padding: 10px; font-size: 18px; border-radius: 8px; border: none; background: #e3e7ee; cursor: pointer; transition: all 0.2s; }
 .key:hover { background: #d0d6df; transform: scale(1.05); }
 .action { background: #ffd966; }
 .disabled { opacity: 0.5; pointer-events: none; }
 .navigation { margin-top: 12px; text-align: center; }
-.next-btn {
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  background: #4caf50;
-  color: white;
-  cursor: pointer;
-}
+.next-btn { padding: 10px 20px; font-size: 16px; border-radius: 8px; border: none; background: #4caf50; color: white; cursor: pointer; }
 .next-btn:disabled { background: #9ccc9c; cursor: not-allowed; }
-.back-btn {
-  padding: 10px 20px;
-  font-size: 14px;
-  border-radius: 8px;
-  border: none;
-  background: #999;
-  color: white;
-  cursor: pointer;
-  margin-right: 10px;
-}
+.back-btn { padding: 10px 20px; font-size: 14px; border-radius: 8px; border: none; background: #999; color: white; cursor: pointer; margin-right: 10px; }
 
-/* === ЭКРАН РЕЗУЛЬТАТОВ (НОВОЕ) === */
-.results-screen {
-  width: 500px;
-  text-align: center;
-}
-.results-header {
-  margin-bottom: 20px;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 10px;
-}
-.results-summary {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
-  background: #f1f8e9;
-  padding: 15px;
-  border-radius: 8px;
-}
-.summary-item {
-  display: flex;
-  flex-direction: column;
-}
-.summary-val {
-  font-size: 24px;
-  font-weight: bold;
-  color: #4caf50;
-}
-.summary-label {
-  font-size: 12px;
-  color: #666;
-}
-.results-table-container {
-  max-height: 300px;
-  overflow-y: auto;
-  margin-bottom: 20px;
-  border: 1px solid #eee;
-  border-radius: 8px;
-}
-.results-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-.results-table th {
-  background: #f5f5f5;
-  padding: 10px;
-  text-align: left;
-  font-size: 12px;
-  color: #555;
-  position: sticky;
-  top: 0;
-}
-.results-table td {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  text-align: left;
-}
+/* === ЭКРАН РЕЗУЛЬТАТОВ === */
+.results-screen { width: 500px; text-align: center; }
+.results-header { margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+.results-summary { display: flex; justify-content: space-around; margin-bottom: 20px; background: #f1f8e9; padding: 15px; border-radius: 8px; }
+.summary-item { display: flex; flex-direction: column; }
+.summary-val { font-size: 24px; font-weight: bold; color: #4caf50; }
+.summary-label { font-size: 12px; color: #666; }
+.results-table-container { max-height: 300px; overflow-y: auto; margin-bottom: 20px; border: 1px solid #eee; border-radius: 8px; }
+.results-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.results-table th { background: #f5f5f5; padding: 10px; text-align: left; font-size: 12px; color: #555; position: sticky; top: 0; }
+.results-table td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
 .res-row-correct { background-color: #f1fff3; }
 .res-row-wrong { background-color: #fff4f4; }
-.status-badge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: bold;
-}
+.status-badge { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; }
 .status-ok { background: #c8e6c9; color: #2e7d32; }
 .status-fail { background: #ffcdd2; color: #c62828; }
+.btn-blue { background: #2196f3; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+.btn-blue:hover { background: #1976d2; }
 
 /* === НАСТРОЙКИ === */
-.settings-panel {
-  margin-top: 20px;
-  padding: 15px;
-  border: 2px solid #4caf50;
-  border-radius: 8px;
-}
-.settings-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-bottom: 12px;
-  gap: 5px 20px;
-}
-.settings-row label {
-  min-width: 150px;
-  font-weight: bold;
-  font-size: 14px;
-}
-.settings-row input[type="color"], .settings-row select, .settings-row input[type="number"], .settings-row textarea {
-  padding: 6px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  width: 180px;
-}
+.settings-panel { margin-top: 20px; padding: 15px; border: 2px solid #4caf50; border-radius: 8px; }
+.settings-row { display: flex; flex-wrap: wrap; align-items: center; margin-bottom: 12px; gap: 5px 20px; }
+.settings-row label { min-width: 150px; font-weight: bold; font-size: 14px; }
+.settings-row input[type="color"], .settings-row select, .settings-row input[type="number"], .settings-row textarea { padding: 6px; font-size: 14px; border: 1px solid #ddd; border-radius: 6px; width: 180px; }
 
 @media (max-width: 768px) {
   body { flex-direction: column; align-items: center; }
@@ -459,7 +195,7 @@ body {
         <div class="tasks-preview" id="tasksPreview"></div>
 
         <div class="start-series-group">
-          <input id="taskCount" type="number" min="1" placeholder="Кол-во заданий для ученика">
+          <input id="taskCount" type="number" min="1" placeholder="Кол-во заданий для ученика" value="3">
           <button id="startSeries">▶️ Начать</button>
         </div>
       </div>
@@ -507,8 +243,8 @@ body {
           <label for="showStatsCheckbox" style="margin: 0;">Показывать статистику в процессе</label>
         </div>
         <div class="settings-row">
-          <label for="finalFeedbackText">Текст финала:</label>
-          <textarea id="finalFeedbackText">Отличная работа! Серия завершена.</textarea>
+          <label for="finalFeedbackText">Текст финала уровня:</label>
+          <textarea id="finalFeedbackText">Уровень пройден!</textarea>
         </div>
         <div class="settings-row">
           <label>Превью:</label>
@@ -525,14 +261,18 @@ body {
   <div class="student-level-selector">
     <h2>Выберите уровень сложности:</h2>
     <div class="student-level-buttons">
-      <button class="student-level-btn level-1" data-level="1">Уровень 1 ⭐</button>
-      <button class="student-level-btn level-2" data-level="2">Уровень 2 ⭐⭐</button>
-      <button class="student-level-btn level-3" data-level="3">Уровень 3 ⭐⭐⭐</button>
+      <button class="student-level-btn level-1" id="btnLvl1" data-level="1">Уровень 1 ⭐</button>
+      <button class="student-level-btn level-2" id="btnLvl2" data-level="2">Уровень 2 ⭐⭐</button>
+      <button class="student-level-btn level-3" id="btnLvl3" data-level="3">Уровень 3 ⭐⭐⭐</button>
     </div>
+    <div id="studentTotalDisplay" style="margin-top: 15px; font-size: 18px; color: #555;"></div>
+    
+    <!-- Кнопка финала появляется когда все уровни пройдены -->
+    <button id="finishGameBtn" style="display:none;">🏆 Итоги игры</button>
   </div>
 </div>
 
-<!-- === ЭКРАН УЧЕНИКА === -->
+<!-- === ЭКРАН УЧЕНИКА (Задания) === -->
 <div class="widget student-task-screen" id="studentPanel" style="display:none;">
   <button class="back-btn" id="backBtn">← Меню</button>
 
@@ -546,7 +286,7 @@ body {
 
   <div class="stats" id="statsPanel">
     <div id="attempts">Попытка: 0 из 3</div>
-    <div id="score">Баллы: 0</div>
+    <div id="score">Баллы за уровень: 0</div>
   </div>
 
   <div class="keyboard" id="keyboard"></div>
@@ -556,10 +296,10 @@ body {
   </div>
 </div>
 
-<!-- === ЭКРАН РЕЗУЛЬТАТОВ (НОВОЕ) === -->
+<!-- === ЭКРАН РЕЗУЛЬТАТОВ (Промежуточный или Финальный) === -->
 <div class="widget results-screen" id="resultsPanel" style="display:none;">
   <div class="results-header">
-    <h2 id="finalTitle">🏁 Результаты</h2>
+    <h2 id="finalTitle">🏁 Результаты уровня</h2>
     <p id="finalSubtitle"></p>
   </div>
 
@@ -588,13 +328,11 @@ body {
           <th>Баллы</th>
         </tr>
       </thead>
-      <tbody id="resultsBody">
-        <!-- Сюда попадут строки -->
-      </tbody>
+      <tbody id="resultsBody"></tbody>
     </table>
   </div>
 
-  <button class="level-btn level-2" id="restartBtn">🔄 Заново</button>
+  <button class="btn-blue" id="backToMenuBtn">🔙 Выбрать уровень</button>
 </div>
 
 <script>
@@ -611,18 +349,27 @@ const KEY_GROUPS = {
 const scoring = {1:100, 2:50, 3:25};
 const maxAttempts = 3;
 
+// Данные
 let tasks = {1: [], 2: [], 3: []};
 let studentTasks = [];
-// Хранение результатов сессии: [{question, attempts, points, success: bool}]
-let sessionHistory = []; 
 
+// Переменные ТЕКУЩЕГО уровня
+let currentLevelHistory = []; 
+let currentLevelScore = 0;
 let currentTaskIndex = 0;
 let attemptCount = 0;
 let taskFinished = false;
-let score = 0;
 let selectedLevel = 1;
-let editingTaskIndex = null;
-let currentEditLevel = 1;
+
+// ГЛОБАЛЬНЫЕ переменные (на всю игру)
+let grandHistory = []; // Здесь будем копить историю всех уровней
+let completedLevels = []; // ID пройденных уровней
+
+// UI Elements
+const teacherPanel = document.getElementById("teacherPanel");
+const studentLevelPanel = document.getElementById("studentLevelPanel");
+const studentPanel = document.getElementById("studentPanel");
+const resultsPanel = document.getElementById("resultsPanel");
 
 const keyboard = document.getElementById("keyboard");
 const input = document.getElementById("answerInput");
@@ -634,15 +381,13 @@ const statsPanel = document.getElementById("statsPanel");
 const questionEl = document.getElementById("question");
 const nextBtn = document.getElementById("nextBtn");
 const backBtn = document.getElementById("backBtn");
-const teacherPanel = document.getElementById("teacherPanel");
-const studentPanel = document.getElementById("studentPanel");
-const studentLevelPanel = document.getElementById("studentLevelPanel");
-const resultsPanel = document.getElementById("resultsPanel");
+const finishGameBtn = document.getElementById("finishGameBtn");
+
 const keySelector = document.getElementById("keySelector");
 const tasksPreview = document.getElementById("tasksPreview");
 const currentLevelDisplay = document.getElementById("currentLevelDisplay");
 
-// Settings inputs
+// Settings
 const fontFamilySelect = document.getElementById("fontFamilySelect");
 const fontSizeInput = document.getElementById("fontSizeInput");
 const colorInput = document.getElementById("colorInput");
@@ -664,6 +409,11 @@ let uiSettings = {
   finalFeedbackText: finalFeedbackText.value.trim()
 };
 
+// Редактирование
+let editingTaskIndex = null;
+let currentEditLevel = 1;
+
+// --- Инициализация клавиатуры ---
 function initKeyboard() {
   keySelector.innerHTML = "";
   for (const groupId in KEY_GROUPS) {
@@ -704,7 +454,7 @@ function updateUISettings() {
   uiSettings.solutionFontSize = solutionFontSize.value + "px";
   uiSettings.feedbackColor = feedbackColorInput.value;
   uiSettings.showStats = showStatsCheckbox.checked;
-  uiSettings.finalFeedbackText = finalFeedbackText.value.trim() || "Серия заданий завершена.";
+  uiSettings.finalFeedbackText = finalFeedbackText.value.trim() || "Уровень завершен.";
   
   const questionText = document.getElementById("tQuestion").value || "Пример вопроса";
   previewQuestionText.textContent = questionText;
@@ -717,10 +467,14 @@ function updateUISettings() {
 });
 updateUISettings();
 
+// Переключение уровней в редакторе
 document.querySelectorAll(".level-btn").forEach(btn => {
-  if (btn.id === 'restartBtn') return; // Исключаем кнопку рестарта из этого обработчика
+  // Пропускаем кнопки ученика
+  if (btn.classList.contains("student-level-btn")) return;
+  if (btn.id === 'backToMenuBtn') return;
+
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".level-btn:not(#restartBtn)").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".teacher .level-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     currentEditLevel = parseInt(btn.dataset.level);
     currentLevelDisplay.textContent = currentEditLevel;
@@ -733,6 +487,7 @@ document.querySelectorAll(".level-btn").forEach(btn => {
   });
 });
 
+// Добавление задачи
 document.getElementById("addTask").onclick = () => {
   const question = document.getElementById("tQuestion").value.trim();
   const answers = document.getElementById("tAnswers").value.split(",").map(a => a.trim()).filter(a => a);
@@ -814,6 +569,7 @@ window.editTask = function(index) {
   document.querySelector(".tasks-editor").scrollIntoView({ behavior: "smooth" });
 };
 
+// === СТАРТ СЕРИИ УЧИТЕЛЕМ ===
 document.getElementById("startSeries").onclick = () => {
   const count = parseInt(document.getElementById("taskCount").value, 10);
   if (!count || count < 1) {
@@ -825,43 +581,112 @@ document.getElementById("startSeries").onclick = () => {
     alert("Добавьте хотя бы одно задание!");
     return;
   }
+  // Сброс глобальной статистики при старте новой сессии
+  grandHistory = [];
+  completedLevels = [];
+  updateStudentMenu();
+
   teacherPanel.style.display = "none";
   studentLevelPanel.style.display = "block";
 };
 
+// === ВЫБОР УРОВНЯ УЧЕНИКОМ ===
 document.querySelectorAll(".student-level-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    selectedLevel = parseInt(btn.dataset.level);
-    const count = parseInt(document.getElementById("taskCount").value, 10);
-    if (tasks[selectedLevel].length === 0) {
-      alert(`На уровне ${selectedLevel} нет заданий!`);
+    const lvl = parseInt(btn.dataset.level);
+    if (completedLevels.includes(lvl)) {
+      // Если уровень уже пройден, ничего не делаем
       return;
     }
+    
+    if (tasks[lvl].length === 0) {
+      alert(`На уровне ${lvl} нет заданий!`);
+      return;
+    }
+    
+    selectedLevel = lvl;
+    const count = parseInt(document.getElementById("taskCount").value, 10);
     const maxCount = Math.min(count, tasks[selectedLevel].length);
     
     studentTasks = getRandomTasks(tasks[selectedLevel], maxCount);
+    
+    // Сброс текущего уровня
+    currentLevelScore = 0;
+    currentLevelHistory = [];
+    currentTaskIndex = 0;
+    
     studentLevelPanel.style.display = "none";
     studentPanel.style.display = "block";
     resultsPanel.style.display = "none";
     
-    // Сброс статистики сессии
-    score = 0;
-    sessionHistory = [];
-    scoreEl.textContent = "Баллы: 0";
-    currentTaskIndex = 0;
+    scoreEl.textContent = "Баллы за уровень: 0";
     applyUISettings();
     loadTask(0);
   });
 });
 
+function updateStudentMenu() {
+  let totalScore = 0;
+  grandHistory.forEach(h => totalScore += h.points);
+  
+  // Обновляем кнопки
+  [1, 2, 3].forEach(lvl => {
+    const btn = document.getElementById(`btnLvl${lvl}`);
+    const hasTasks = tasks[lvl].length > 0;
+    
+    // Снимаем классы
+    btn.classList.remove("completed");
+    
+    if (!hasTasks) {
+       btn.style.opacity = "0.5";
+       btn.title = "Нет заданий";
+    } else {
+       btn.style.opacity = "1";
+    }
+
+    if (completedLevels.includes(lvl)) {
+      btn.classList.add("completed");
+      btn.title = "Уровень пройден";
+    }
+  });
+
+  const display = document.getElementById("studentTotalDisplay");
+  if (grandHistory.length > 0) {
+    display.textContent = `Общий счет: ${totalScore} очков`;
+  } else {
+    display.textContent = "";
+  }
+
+  // Проверяем, доступны ли еще уровни
+  const activeLevels = [1, 2, 3].filter(l => tasks[l].length > 0);
+  const allDone = activeLevels.length > 0 && activeLevels.every(l => completedLevels.includes(l));
+  
+  if (allDone) {
+    finishGameBtn.style.display = "inline-block";
+  } else {
+    finishGameBtn.style.display = "none";
+  }
+}
+
+// Переход обратно в меню уровней
 backBtn.onclick = () => {
   studentPanel.style.display = "none";
-  studentLevelPanel.style.display = "block";
-};
-
-document.getElementById("restartBtn").onclick = () => {
   resultsPanel.style.display = "none";
   studentLevelPanel.style.display = "block";
+  updateStudentMenu();
+};
+
+document.getElementById("backToMenuBtn").onclick = () => {
+  studentPanel.style.display = "none";
+  resultsPanel.style.display = "none";
+  studentLevelPanel.style.display = "block";
+  updateStudentMenu();
+};
+
+// ПОКАЗАТЬ ИТОГОВЫЙ РЕЗУЛЬТАТ (ВСЕ УРОВНИ)
+finishGameBtn.onclick = () => {
+  studentLevelPanel.style.display = "none";
+  showFinalGrandTable();
 };
 
 function getRandomTasks(allTasks, count) {
@@ -873,15 +698,19 @@ function insertAtCursor(v) {
   if (!taskFinished) input.value += v;
 }
 
-// Запись результата в историю
 function recordResult(success, points) {
   const currentTask = studentTasks[currentTaskIndex];
-  sessionHistory.push({
+  // Записываем в историю уровня
+  const record = {
+    level: selectedLevel,
     question: currentTask.question,
     attempts: attemptCount,
     points: points,
     success: success
-  });
+  };
+  currentLevelHistory.push(record);
+  // И сразу в глобальную
+  grandHistory.push(record);
 }
 
 function disableTask() {
@@ -899,18 +728,17 @@ function checkAnswer() {
   const user = input.value.replace(/\s+/g,"");
   if (studentTasks[currentTaskIndex].answers.includes(user)) {
     const pts = scoring[attemptCount] || 0;
-    score += pts;
-    scoreEl.textContent = `Баллы: ${score}`;
+    currentLevelScore += pts;
+    scoreEl.textContent = `Баллы за уровень: ${currentLevelScore}`;
     feedback.textContent = `✅ Верно! +${pts}`;
     feedback.style.color = uiSettings.feedbackColor;
-    
-    recordResult(true, pts); // Записываем успех
+    recordResult(true, pts);
     disableTask();
   } else {
     feedback.textContent = "❌ Неверно";
     feedback.style.color = "red";
     if (attemptCount >= maxAttempts) {
-      recordResult(false, 0); // Записываем провал
+      recordResult(false, 0);
       disableTask();
     }
   }
@@ -922,14 +750,13 @@ function applyUISettings() {
   questionEl.style.color = uiSettings.questionColor;
   feedback.style.color = uiSettings.feedbackColor;
   statsPanel.style.display = uiSettings.showStats ? "flex" : "none";
-
   solutionInput.style.fontFamily = uiSettings.solutionFontFamily;
   solutionInput.style.fontSize = uiSettings.solutionFontSize;
 }
 
 function loadTask(i) {
   const t = studentTasks[i];
-  if (!t) { return; }
+  if (!t) return;
   questionEl.textContent = `(${i + 1}/${studentTasks.length}) ${t.question}`;
   input.value = "";
   input.disabled = false;
@@ -943,12 +770,8 @@ function loadTask(i) {
     solutionInput.style.display = "block";
     solutionInput.value = "";
     solutionInput.disabled = false;
-    solutionInput.style.fontFamily = uiSettings.solutionFontFamily;
-    solutionInput.style.fontSize = uiSettings.solutionFontSize;
   } else {
     solutionInput.style.display = "none";
-    solutionInput.value = "";
-    solutionInput.disabled = true;
   }
   
   statsPanel.style.display = uiSettings.showStats ? "flex" : "none";
@@ -970,26 +793,60 @@ function loadTask(i) {
   });
 }
 
-// Отображение финальной таблицы
-function showResults() {
+// Показать статистику ТЕКУЩЕГО уровня
+function showLevelResults() {
   studentPanel.style.display = "none";
   resultsPanel.style.display = "block";
   
+  // Добавляем уровень в список пройденных
+  if (!completedLevels.includes(selectedLevel)) {
+    completedLevels.push(selectedLevel);
+  }
+
+  document.getElementById("finalTitle").textContent = `🏁 Результаты: Уровень ${selectedLevel}`;
   document.getElementById("finalSubtitle").textContent = uiSettings.finalFeedbackText;
-  document.getElementById("resTotalScore").textContent = score;
   
-  const correctCount = sessionHistory.filter(h => h.success).length;
-  document.getElementById("resCorrectCount").textContent = `${correctCount}/${sessionHistory.length}`;
+  // Кнопка возврата
+  document.getElementById("backToMenuBtn").textContent = "🔙 Выбрать уровень";
+  document.getElementById("backToMenuBtn").onclick = () => {
+      resultsPanel.style.display = "none";
+      studentLevelPanel.style.display = "block";
+      updateStudentMenu();
+  };
+
+  buildTable(currentLevelHistory);
+}
+
+// Показать ГЛОБАЛЬНУЮ статистику
+function showFinalGrandTable() {
+  resultsPanel.style.display = "block";
+  document.getElementById("finalTitle").textContent = `🏆 ОБЩИЕ ИТОГИ ИГРЫ`;
+  document.getElementById("finalSubtitle").textContent = "Все уровни пройдены!";
   
-  const accuracy = sessionHistory.length > 0 
-    ? Math.round((correctCount / sessionHistory.length) * 100) 
-    : 0;
+  // Кнопка просто обновляет страницу для новой игры или возвращает в меню
+  document.getElementById("backToMenuBtn").textContent = "🔄 Начать заново";
+  document.getElementById("backToMenuBtn").onclick = () => location.reload();
+
+  buildTable(grandHistory);
+}
+
+// Универсальная функция построения таблицы
+function buildTable(dataSet) {
+  let totalScore = 0;
+  dataSet.forEach(d => totalScore += d.points);
+  
+  document.getElementById("resTotalScore").textContent = totalScore;
+  
+  const correctCount = dataSet.filter(h => h.success).length;
+  document.getElementById("resCorrectCount").textContent = `${correctCount}/${dataSet.length}`;
+  
+  const accuracy = dataSet.length > 0 ? Math.round((correctCount / dataSet.length) * 100) : 0;
   document.getElementById("resAccuracy").textContent = `${accuracy}%`;
 
   const tbody = document.getElementById("resultsBody");
   tbody.innerHTML = "";
   
-  sessionHistory.forEach((item, idx) => {
+  dataSet.forEach((item, idx) => {
     const row = document.createElement("tr");
     row.className = item.success ? "res-row-correct" : "res-row-wrong";
     
@@ -997,10 +854,13 @@ function showResults() {
     const statusHtml = item.success 
       ? `<span class="status-badge status-ok">Верно</span>` 
       : `<span class="status-badge status-fail">Неверно</span>`;
-      
+    
+    // Добавим метку уровня, если это глобальная таблица
+    const levelBadge = `<span class="task-level-badge level-${item.level}">L${item.level}</span>`;
+
     row.innerHTML = `
       <td>${idx + 1}</td>
-      <td>${item.question} <br> ${statusHtml}</td>
+      <td>${levelBadge} ${item.question} <br> ${statusHtml}</td>
       <td style="text-align:center;">${attemptsText}</td>
       <td style="text-align:center; font-weight:bold;">${item.points}</td>
     `;
@@ -1013,8 +873,7 @@ nextBtn.onclick = () => {
   if (currentTaskIndex < studentTasks.length) {
     loadTask(currentTaskIndex);
   } else {
-    // ВМЕСТО простого сообщения показываем результаты
-    showResults();
+    showLevelResults();
   }
 };
 
