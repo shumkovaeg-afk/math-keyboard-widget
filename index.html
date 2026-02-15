@@ -1,681 +1,611 @@
 <!DOCTYPE html>
-<html lang=“ru”>
+<html lang="ru">
 <head>
-<meta charset=“UTF-8” />
+<meta charset="UTF-8" />
 <title>Math Keyboard Widget</title>
 
 <style>
-
-{ box-sizing: border-box; }
-body {
-font-family: Arial, sans-serif;
-background: #f4f6f8;
-margin: 0;
-padding: 20px;
-display: flex;
-gap: 20px;
-align-items: flex-start;
+* {
+  box-sizing: border-box;
 }
-
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center; /* Центрирование для одиночного режима */
+}
 .widget {
-background: white;
-padding: 20px;
-border-radius: 12px;
-box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 /* === РЕДАКТОР УЧИТЕЛЯ === */
 .teacher {
-width: 100%;
-max-width: 1400px;
+  width: 100%;
+  max-width: 1400px;
 }
-
 .teacher-container {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
-
 .teacher-column {
-display: flex;
-flex-direction: column;
-gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
-
 .teacher-column h3 {
-margin: 0 0 10px 0;
-border-bottom: 2px solid #4caf50;
-padding-bottom: 10px;
+  margin: 0 0 10px 0;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 10px;
 }
-
 .level-selector {
-display: flex;
-gap: 10px;
-margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
 }
-
 .level-btn {
-flex: 1;
-padding: 12px;
-font-size: 16px;
-font-weight: bold;
-border: 2px solid #ddd;
-border-radius: 8px;
-background: white;
-cursor: pointer;
-transition: all 0.3s;
+  flex: 1;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s;
 }
-
 .level-btn:hover {
-border-color: #4caf50;
+  border-color: #4caf50;
 }
-
 .level-btn.active {
-background: #4caf50;
-color: white;
-border-color: #4caf50;
+  background: #4caf50;
+  color: white;
+  border-color: #4caf50;
 }
-
 .level-btn.level-1 { border-left: 4px solid #ff9800; }
 .level-btn.level-2 { border-left: 4px solid #2196f3; }
 .level-btn.level-3 { border-left: 4px solid #f44336; }
-
 .level-btn.active.level-1 { background: #ff9800; }
 .level-btn.active.level-2 { background: #2196f3; }
 .level-btn.active.level-3 { background: #f44336; }
 
 /* === ЛЕВАЯ КОЛОНКА: КЛАВИАТУРА === */
 .keyboard-settings {
-max-height: 600px;
-overflow-y: auto;
-padding-right: 10px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 10px;
 }
-
-.keyboard-settings::-webkit-scrollbar {
-width: 6px;
-}
-
-.keyboard-settings::-webkit-scrollbar-track {
-background: #f1f1f1;
-border-radius: 10px;
-}
-
-.keyboard-settings::-webkit-scrollbar-thumb {
-background: #888;
-border-radius: 10px;
-}
-
-.keyboard-settings::-webkit-scrollbar-thumb:hover {
-background: #555;
-}
-
 .key-group {
-margin-bottom: 15px;
-padding: 12px;
-background: #f9f9f9;
-border-radius: 8px;
-border-left: 4px solid #4caf50;
+  margin-bottom: 15px;padding: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border-left: 4px solid #4caf50;
 }
-
 .key-group strong {
-display: block;
-margin-bottom: 8px;
-font-size: 14px;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
-
 .preset-btn {
-padding: 6px 12px;
-font-size: 12px;
-background: #4caf50;
-color: white;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-margin-bottom: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 8px;
 }
-
-.preset-btn:hover {
-background: #45a049;
-}
-
 .key-selector label {
-display: inline-block;
-margin: 4px 8px 4px 0;
-font-size: 13px;
-padding: 4px 8px;
-background: white;
-border-radius: 4px;
-cursor: pointer;
-transition: all 0.2s;
+  display: inline-block;
+  margin: 4px 8px 4px 0;
+  font-size: 13px;
+  padding: 4px 8px;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
-
 .key-selector label:hover {
-background: #e8f5e9;
-}
-
-.key-selector input[type=“checkbox”] {
-margin-right: 4px;
-cursor: pointer;
+  background: #e8f5e9;
 }
 
 /* === ПРАВАЯ КОЛОНКА: ЗАДАНИЯ === */
 .tasks-editor {
-display: flex;
-flex-direction: column;
-gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-
 .task-input-group {
-display: flex;
-flex-direction: column;
-gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
-
 .task-input-group label {
-font-weight: bold;
-font-size: 14px;
-color: #333;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
 }
-
 .task-input-group input {
-width: 100%;
-padding: 10px;
-border: 1px solid #ddd;
-border-radius: 6px;
-font-size: 14px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
 }
-
-.task-input-group input:focus {
-outline: none;
-border-color: #4caf50;
-box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-}
-
 .button-group {
-display: flex;
-gap: 10px;
+  display: flex;
+  gap: 10px;
 }
-
 .button-group button {
-flex: 1;
-padding: 12px;
-font-size: 14px;
-font-weight: bold;
-border: none;
-border-radius: 6px;
-cursor: pointer;
-transition: all 0.3s;
+  flex: 1;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
 }
-
-#addTask {
-background: #4caf50;
-color: white;
-}
-
-#addTask:hover {
-background: #45a049;
-}
-
-#cancelEdit {
-background: #999;
-color: white;
-}
-
-#cancelEdit:hover {
-background: #777;
-}
-
-#cancelEdit:disabled {
-opacity: 0.5;
-cursor: not-allowed;
-}
-
+#addTask { background: #4caf50; color: white; }
+#addTask:hover { background: #45a049; }
+#cancelEdit { background: #999; color: white; }
 .tasks-preview {
-max-height: 400px;
-overflow-y: auto;
-padding: 10px;
-background: #f5f5f5;
-border-radius: 8px;
-border: 1px solid #ddd;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
-
-.tasks-preview::-webkit-scrollbar {
-width: 6px;
-}
-
-.tasks-preview::-webkit-scrollbar-track {
-background: #f1f1f1;
-border-radius: 10px;
-}
-
-.tasks-preview::-webkit-scrollbar-thumb {
-background: #888;
-border-radius: 10px;
-}
-
 .task-item {
-background: white;
-border-left: 4px solid #4caf50;
-border-radius: 6px;
-padding: 10px;
-margin-bottom: 8px;
-font-size: 13px;
+  background: white;
+  border-left: 4px solid #4caf50;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 8px;
+  font-size: 13px;
 }
-
-.task-item.level-1 { border-left-color: #ff9800; }
-.task-item.level-2 { border-left-color: #2196f3; }
-.task-item.level-3 { border-left-color: #f44336; }
-
 .task-item-header {
-font-weight: bold;
-margin-bottom: 6px;
-display: flex;
-justify-content: space-between;
-align-items: center;
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-
 .task-level-badge {
-display: inline-block;
-padding: 2px 8px;
-border-radius: 12px;
-font-size: 11px;
-font-weight: bold;
-color: white;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+  color: white;
 }
-
 .task-level-badge.level-1 { background: #ff9800; }
 .task-level-badge.level-2 { background: #2196f3; }
 .task-level-badge.level-3 { background: #f44336; }
-
-.task-item-content {
-margin-bottom: 6px;
-line-height: 1.4;
-}
-
-.task-item-buttons {
-display: flex;
-gap: 6px;
-}
-
-.task-item-buttons button {
-flex: 1;
-padding: 6px;
-font-size: 12px;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-transition: all 0.2s;
-}
-
-.edit-btn {
-background: #2196f3;
-color: white;
-}
-
-.edit-btn:hover {
-background: #0b7dda;
-}
-
-.delete-btn {
-background: #f44336;
-color: white;
-}
-
-.delete-btn:hover {
-background: #da190b;
-}
+.task-item-buttons { display: flex; gap: 6px; }
+.task-item-buttons button { flex: 1; padding: 6px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; }
+.edit-btn { background: #2196f3; color: white; }
+.delete-btn { background: #f44336; color: white; }
 
 .start-series-group {
-display: flex;
-gap: 10px;
-margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
 }
-
 .start-series-group input {
-flex: 1;
-padding: 10px;
-border: 1px solid #ddd;
-border-radius: 6px;
-font-size: 14px;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
 }
-
 .start-series-group button {
-flex: 1;
-padding: 12px;
-font-size: 14px;
-font-weight: bold;
-background: #4caf50;
-color: white;
-border: none;
-border-radius: 6px;
-cursor: pointer;
-}
-
-.start-series-group button:hover {
-background: #45a049;
+  flex: 1;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 /* === ЭКРАН УЧЕНИКА === */
 .student-level-selector {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-min-height: 400px;
-gap: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 20px;
 }
-
-.student-level-selector h2 {
-margin: 0;
-color: #333;
-}
-
 .student-level-buttons {
-display: flex;
-gap: 20px;
-flex-wrap: wrap;
-justify-content: center;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-
 .student-level-btn {
-padding: 20px 40px;
-font-size: 18px;
-font-weight: bold;
-border: none;
-border-radius: 8px;
-cursor: pointer;
-color: white;
-transition: all 0.3s;
-min-width: 150px;
+  padding: 20px 40px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s;
+  min-width: 150px;
 }
-
-.student-level-btn:hover {
-transform: scale(1.05);
-}
-
-.student-level-btn.level-1 {
-background: #ff9800;
-}
-
-.student-level-btn.level-1:hover {
-background: #e68900;
-}
-
-.student-level-btn.level-2 {
-background: #2196f3;
-}
-
-.student-level-btn.level-2:hover {
-background: #0b7dda;
-}
-
-.student-level-btn.level-3 {
-background: #f44336;
-}
-
-.student-level-btn.level-3:hover {
-background: #da190b;
-}
+.student-level-btn.level-1 { background: #ff9800; }
+.student-level-btn.level-2 { background: #2196f3; }
+.student-level-btn.level-3 { background: #f44336; }
 
 .student-task-screen {
-width: 420px;
+  width: 420px;
+  position: relative;
 }
-
-.question {
-font-size: 18px;
-margin-bottom: 10px;
-}
-
+.question { margin-bottom: 10px; }
 .answer-input {
-width: 100%;
-font-size: 20px;
-padding: 8px;
-margin-bottom: 10px;
+  width: 100%;
+  font-size: 20px;
+  padding: 8px;
+  margin-bottom: 10px;
 }
-
 .feedback {
-min-height: 24px;
-margin-bottom: 10px;
-font-weight: bold;
+  height: 24px;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
-
 .stats {
-font-size: 14px;
-margin-bottom: 10px;
-display: flex;
-justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
 }
-
 .keyboard {
-display: grid;
-grid-template-columns: repeat(6, 1fr);
-gap: 6px;
-margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
 }
-
 .key {
-padding: 10px;
-font-size: 18px;
-border-radius: 8px;
-border: none;
-background: #e3e7ee;
-cursor: pointer;
-transition: all 0.2s;
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 8px;
+  border: none;
+  background: #e3e7ee;
+  cursor: pointer;
+  transition: all 0.2s;
 }
-
-.key:hover {
-background: #d0d6df;
-transform: scale(1.05);
-}
-
-.action {
-background: #ffd966;
-}
-
-.action:hover {
-background: #ffca28;
-}
-
-.disabled {
-opacity: 0.5;
-pointer-events: none;
-}
-
-.navigation {
-margin-top: 12px;
-text-align: center;
-}
-
+.key:hover { background: #d0d6df; transform: scale(1.05); }
+.action { background: #ffd966; }
+.disabled { opacity: 0.5; pointer-events: none; }
+.navigation { margin-top: 12px; text-align: center; }
 .next-btn {
-padding: 10px 20px;
-font-size: 16px;
-border-radius: 8px;
-border: none;
-background: #4caf50;
-color: white;
-cursor: pointer;
-transition: all 0.2s;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background: #4caf50;
+  color: white;
+  cursor: pointer;
 }
-
-.next-btn:hover:not(:disabled) {
-background: #45a049;
-}
-
-.next-btn:disabled {
-background: #9ccc9c;
-cursor: not-allowed;
-}
-
+.next-btn:disabled { background: #9ccc9c; cursor: not-allowed; }
 .back-btn {
-padding: 10px 20px;
-font-size: 14px;
-border-radius: 8px;
-border: none;
-background: #999;
-color: white;
-cursor: pointer;
-margin-right: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  background: #999;
+  color: white;
+  cursor: pointer;
+  margin-right: 10px;
 }
 
-.back-btn:hover {
-background: #777;
+/* === ЭКРАН РЕЗУЛЬТАТОВ (НОВОЕ) === */
+.results-screen {
+  width: 500px;
+  text-align: center;
 }
+.results-header {
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+}
+.results-summary {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  background: #f1f8e9;
+  padding: 15px;
+  border-radius: 8px;
+}
+.summary-item {
+  display: flex;
+  flex-direction: column;
+}
+.summary-val {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4caf50;
+}
+.summary-label {
+  font-size: 12px;
+  color: #666;
+}
+.results-table-container {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.results-table th {
+  background: #f5f5f5;
+  padding: 10px;
+  text-align: left;
+  font-size: 12px;
+  color: #555;
+  position: sticky;
+  top: 0;
+}
+.results-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+.res-row-correct { background-color: #f1fff3; }
+.res-row-wrong { background-color: #fff4f4; }
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+}
+.status-ok { background: #c8e6c9; color: #2e7d32; }
+.status-fail { background: #ffcdd2; color: #c62828; }
 
-/* === ФИНАЛЬНАЯ СТАТИСТИКА === */
-.final-stats {
-background: #f0f8ff;
-border: 2px solid #4caf50;
-border-radius: 10px;
-padding: 15px;
-margin-top: 10px;
-line-height: 1.8;
+/* === НАСТРОЙКИ === */
+.settings-panel {
+  margin-top: 20px;
+  padding: 15px;
+  border: 2px solid #4caf50;
+  border-radius: 8px;
 }
-
-.final-stats h3 {
-margin: 0 0 10px 0;
-color: #333;
+.settings-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 5px 20px;
 }
-
-.final-stats .stat-row {
-display: flex;
-justify-content: space-between;
-padding: 4px 0;
-border-bottom: 1px dashed #ddd;
+.settings-row label {
+  min-width: 150px;
+  font-weight: bold;
+  font-size: 14px;
 }
-
-.final-stats .stat-row:last-child {
-border-bottom: none;
-}
-
-.final-stats .stat-label {
-color: #555;
-}
-
-.final-stats .stat-value {
-font-weight: bold;
-color: #333;
-}
-
-.final-stats .final-message {
-margin-top: 12px;
-padding: 10px;
-background: #e8f5e9;
-border-radius: 6px;
-text-align: center;
-font-style: italic;
-color: #2e7d32;
-}
-
-@media (max-width: 1200px) {
-.teacher-container {
-grid-template-columns: 1fr;
-}
+.settings-row input[type="color"], .settings-row select, .settings-row input[type="number"], .settings-row textarea {
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  width: 180px;
 }
 
 @media (max-width: 768px) {
-body {
-flex-direction: column;
-}
-
-.student-task-screen {
-width: 100%;
-}
+  body { flex-direction: column; align-items: center; }
+  .teacher-container { grid-template-columns: 1fr; }
+  .student-task-screen, .results-screen { width: 100%; max-width: 420px; }
 }
 </style>
 </head>
-
 <body>
 
 <!-- === РЕДАКТОР УЧИТЕЛЯ === -->
-<div class=“widget teacher” id=“teacherPanel”>
-<h2>📚 Редактор заданий</h2>
+<div class="widget teacher" id="teacherPanel">
+  <h2>📚 Редактор заданий</h2>
 
-<div class=“level-selector”>
-<button class=“level-btn level-1 active” data-level=“1”>Уровень 1 ⭐</button>
-<button class=“level-btn level-2” data-level=“2”>Уровень 2 ⭐⭐</button>
-<button class=“level-btn level-3” data-level=“3”>Уровень 3 ⭐⭐⭐</button>
-</div>
+  <div class="level-selector">
+    <button class="level-btn level-1 active" data-level="1">Уровень 1 ⭐</button>
+    <button class="level-btn level-2" data-level="2">Уровень 2 ⭐⭐</button>
+    <button class="level-btn level-3" data-level="3">Уровень 3 ⭐⭐⭐</button>
+  </div>
 
-<div class=“teacher-container”>
-  <div class="teacher-column">
-  <h3>⌨️ Настройка клавиатуры</h3>
-  <div class="keyboard-settings" id="keySelector"></div>
-</div>
+  <div class="teacher-container">
 
-<div class="teacher-column">
-  <h3>❓ Задания уровня <span id="currentLevelDisplay">1</span></h3>
-
-  <div class="tasks-editor">
-    <div class="task-input-group">
-      <label>Текст задания</label>
-      <input id="tQuestion" placeholder="Решите: x² = 9" />
+    <div class="teacher-column">
+      <h3>⌨️ Настройка клавиатуры</h3>
+      <div class="keyboard-settings" id="keySelector"></div>
     </div>
 
-    <div class="task-input-group">
-      <label>Правильные ответы (через запятую)</label>
-      <input id="tAnswers" placeholder="3, -3, ±3" />
-    </div>
+    <div class="teacher-column">
+      <h3>❓ Задания уровня <span id="currentLevelDisplay">1</span></h3>
 
-    <div class="button-group">
-      <button id="addTask">➕ Добавить</button>
-      <button id="cancelEdit" disabled>❌ Отмена</button>
-    </div>
+      <div class="tasks-editor">
+        <div class="task-input-group">
+          <label>Текст задания</label>
+          <input id="tQuestion" placeholder="Решите: x² = 9">
+        </div>
 
-    <div class="tasks-preview" id="tasksPreview"></div>
+        <div class="task-input-group">
+          <label>Правильные ответы (через запятую)</label>
+          <input id="tAnswers" placeholder="3, -3, ±3">
+        </div>
 
-    <div class="start-series-group">
-      <input id="taskCount" type="number" min="1" placeholder="Кол-во заданий для ученика" />
-      <button id="startSeries">▶️ Начать</button>
+        <div class="task-input-group solution-required">
+          <label><input type="checkbox" id="tRequireSolution"> Требуется ввод решения</label>
+        </div>
+
+        <div class="button-group">
+          <button id="addTask">➕ Добавить</button>
+          <button id="cancelEdit" disabled>❌ Отмена</button>
+        </div>
+
+        <div class="tasks-preview" id="tasksPreview"></div>
+
+        <div class="start-series-group">
+          <input id="taskCount" type="number" min="1" placeholder="Кол-во заданий для ученика">
+          <button id="startSeries">▶️ Начать</button>
+        </div>
+      </div>
+
+      <!-- Блок настроек -->
+      <div class="settings-panel">
+        <h3>⚙️ Настройки внешнего вида</h3>
+        <div class="settings-row">
+          <label for="fontFamilySelect">Шрифт вопроса:</label>
+          <select id="fontFamilySelect">
+            <option value="Arial, sans-serif" selected>Arial</option>
+            <option value="'Times New Roman', serif">Times New Roman</option>
+            <option value="'Courier New', monospace">Courier New</option>
+            <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+            <option value="'Georgia', serif">Georgia</option>
+            <option value="'Verdana', sans-serif">Verdana</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <label for="fontSizeInput">Размер шрифта (px):</label>
+          <input type="number" id="fontSizeInput" value="18" min="10" max="40" />
+        </div>
+        <div class="settings-row">
+          <label for="colorInput">Цвет текста вопроса:</label>
+          <input type="color" id="colorInput" value="#333333" />
+        </div>
+        <div class="settings-row">
+          <label for="solutionFontFamily">Шрифт решения:</label>
+          <select id="solutionFontFamily">
+            <option value="Arial, sans-serif" selected>Arial</option>
+            <option value="'Times New Roman', serif">Times New Roman</option>
+            <option value="'Courier New', monospace">Courier New</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <label for="solutionFontSize">Размер шрифта решения:</label>
+          <input type="number" id="solutionFontSize" value="16" min="10" max="40" />
+        </div>
+        <div class="settings-row">
+          <label for="feedbackColorInput">Цвет ответа:</label>
+          <input type="color" id="feedbackColorInput" value="#28a745" />
+        </div>
+        <div class="settings-row" style="align-items: center;">
+          <input type="checkbox" id="showStatsCheckbox" checked />
+          <label for="showStatsCheckbox" style="margin: 0;">Показывать статистику в процессе</label>
+        </div>
+        <div class="settings-row">
+          <label for="finalFeedbackText">Текст финала:</label>
+          <textarea id="finalFeedbackText">Отличная работа! Серия завершена.</textarea>
+        </div>
+        <div class="settings-row">
+          <label>Превью:</label>
+          <div id="previewQuestionText" style="border: 1px solid #ccc; padding: 8px; border-radius: 4px; min-height: 40px; font-size: 18px; color: #333;"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
-</div>
 
 <!-- === ВЫБОР УРОВНЯ УЧЕНИКА === -->
-<div class=“widget” id=“studentLevelPanel” style=“display:none;”>
-<div class=“student-level-selector”>
-<h2>Выберите уровень сложности:</h2>
-<div class=“student-level-buttons”>
-<button class=“student-level-btn level-1” data-level=“1”>Уровень 1 ⭐</button>
-<button class=“student-level-btn level-2” data-level=“2”>Уровень 2 ⭐⭐</button>
-<button class=“student-level-btn level-3” data-level=“3”>Уровень 3 ⭐⭐⭐</button>
-</div>
-</div>
+<div class="widget" id="studentLevelPanel" style="display:none;">
+  <div class="student-level-selector">
+    <h2>Выберите уровень сложности:</h2>
+    <div class="student-level-buttons">
+      <button class="student-level-btn level-1" data-level="1">Уровень 1 ⭐</button>
+      <button class="student-level-btn level-2" data-level="2">Уровень 2 ⭐⭐</button>
+      <button class="student-level-btn level-3" data-level="3">Уровень 3 ⭐⭐⭐</button>
+    </div>
+  </div>
 </div>
 
 <!-- === ЭКРАН УЧЕНИКА === -->
-<div class=“widget student-task-screen” id=“studentPanel” style=“display:none;”>
-<button class=“back-btn” id=“backBtn”>← Назад</button>
+<div class="widget student-task-screen" id="studentPanel" style="display:none;">
+  <button class="back-btn" id="backBtn">← Меню</button>
 
-<div class=“question” id=“question”></div>
+  <div class="question" id="question"></div>
 
-<input id=“answerInput” class=“answer-input” placeholder=“Введите ответ” />
+  <textarea id="solutionInput" placeholder="Введите решение (необязательно)" style="width: 100%; height: 100px; margin-bottom: 10px; font-size: 16px; display: none;"></textarea>
 
-<div class=“feedback” id=“feedback”></div>
+  <input id="answerInput" class="answer-input" placeholder="Введите ответ">
 
-<div class=“stats” id=“statsPanel”>
-<div id=“attempts”>Попытка: 0 из 3</div>
-<div id=“score”>Баллы: 0</div>
+  <div class="feedback" id="feedback"></div>
+
+  <div class="stats" id="statsPanel">
+    <div id="attempts">Попытка: 0 из 3</div>
+    <div id="score">Баллы: 0</div>
+  </div>
+
+  <div class="keyboard" id="keyboard"></div>
+
+  <div class="navigation">
+    <button id="nextBtn" class="next-btn" disabled>Дальше →</button>
+  </div>
 </div>
 
-<div class=“keyboard” id=“keyboard”></div>
+<!-- === ЭКРАН РЕЗУЛЬТАТОВ (НОВОЕ) === -->
+<div class="widget results-screen" id="resultsPanel" style="display:none;">
+  <div class="results-header">
+    <h2 id="finalTitle">🏁 Результаты</h2>
+    <p id="finalSubtitle"></p>
+  </div>
 
-<div class=“navigation”>
-<button id=“nextBtn” class=“next-btn” disabled>Дальше →</button>
-</div>
+  <div class="results-summary">
+    <div class="summary-item">
+      <span class="summary-val" id="resTotalScore">0</span>
+      <span class="summary-label">Баллов</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-val" id="resCorrectCount">0/0</span>
+      <span class="summary-label">Верно</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-val" id="resAccuracy">0%</span>
+      <span class="summary-label">Точность</span>
+    </div>
+  </div>
 
-<div id=“finalStatsPanel” class=“final-stats” style=“display:none;”></div>
+  <div class="results-table-container">
+    <table class="results-table" id="resultsTable">
+      <thead>
+        <tr>
+          <th>№</th>
+          <th>Задание</th>
+          <th>Попытки</th>
+          <th>Баллы</th>
+        </tr>
+      </thead>
+      <tbody id="resultsBody">
+        <!-- Сюда попадут строки -->
+      </tbody>
+    </table>
+  </div>
+
+  <button class="level-btn level-2" id="restartBtn">🔄 Заново</button>
 </div>
 
 <script>
 const KEY_GROUPS = {
-digits: { title: “Цифровой блок”, keys: [“0”,“1”,“2”,“3”,“4”,“5”,“6”,“7”,“8”,“9”] },
-latin: { title: “Латинские буквы”, keys: [“x”,“y”,“a”,“b”,“c”,“d”,“f”] },
-superscript: { title: “Верхний индекс”, keys: [“⁰”,“¹”,“²”,“³”,“⁴”,“⁵”,“⁶”,“⁷”,“⁸”,“⁹”] },
-subscript: { title: “Нижний индекс”, keys: [“₀”,“₁”,“₂”,“₃”,“₄”] },
-mathOps: { title: “Математические знаки”, keys: [“+”,“−”,“±”,“×”,“÷”,“(”,“)”,“[”,“]”,“=”] },
-mathSymbols: { title: “Математические символы”, keys: [“π”,“∞”,“√”,“°”,“∥”,“⟂”,“∠”] },
-actions: { title: “Действия”, keys: [“Очистить”,“Проверить”] }
+  digits: { title: "Цифровой блок", keys: ["0","1","2","3","4","5","6","7","8","9"] },
+  latin: { title: "Латинские буквы", keys: ["x","y","a","b","c","d","f"] },
+  superscript: { title: "Верхний индекс", keys: ["⁰","¹","²","³","⁴","⁵","⁶","⁷","⁸","⁹"] },
+  subscript: { title: "Нижний индекс", keys: ["₀","₁","₂","₃","₄"] },
+  mathOps: { title: "Математические знаки", keys: ["+","−","±","×","÷","(",")","[","]","="] },
+  mathSymbols: { title: "Математические символы", keys: ["π","∞","√","°","∥","⟂","∠"] },
+  actions: { title: "Действия", keys: ["Очистить","Проверить"] }
 };
 
 const scoring = {1:100, 2:50, 3:25};
@@ -683,6 +613,9 @@ const maxAttempts = 3;
 
 let tasks = {1: [], 2: [], 3: []};
 let studentTasks = [];
+// Хранение результатов сессии: [{question, attempts, points, success: bool}]
+let sessionHistory = []; 
+
 let currentTaskIndex = 0;
 let attemptCount = 0;
 let taskFinished = false;
@@ -691,308 +624,400 @@ let selectedLevel = 1;
 let editingTaskIndex = null;
 let currentEditLevel = 1;
 
-// Статистика
-let totalTasksCount = 0;
-let solvedFirstTry = 0;
-let solvedSecondTry = 0;
-let solvedThirdTry = 0;
-let totalScore = 0;
+const keyboard = document.getElementById("keyboard");
+const input = document.getElementById("answerInput");
+const solutionInput = document.getElementById("solutionInput");
+const feedback = document.getElementById("feedback");
+const attemptsEl = document.getElementById("attempts");
+const scoreEl = document.getElementById("score");
+const statsPanel = document.getElementById("statsPanel");
+const questionEl = document.getElementById("question");
+const nextBtn = document.getElementById("nextBtn");
+const backBtn = document.getElementById("backBtn");
+const teacherPanel = document.getElementById("teacherPanel");
+const studentPanel = document.getElementById("studentPanel");
+const studentLevelPanel = document.getElementById("studentLevelPanel");
+const resultsPanel = document.getElementById("resultsPanel");
+const keySelector = document.getElementById("keySelector");
+const tasksPreview = document.getElementById("tasksPreview");
+const currentLevelDisplay = document.getElementById("currentLevelDisplay");
 
-const keyboard = document.getElementById(“keyboard”);
-const input = document.getElementById(“answerInput”);
-const feedback = document.getElementById(“feedback”);
-const attemptsEl = document.getElementById(“attempts”);
-const scoreEl = document.getElementById(“score”);
-const statsPanel = document.getElementById(“statsPanel”);
-const questionEl = document.getElementById(“question”);
-const nextBtn = document.getElementById(“nextBtn”);
-const backBtn = document.getElementById(“backBtn”);
-const teacherPanel = document.getElementById(“teacherPanel”);
-const studentPanel = document.getElementById(“studentPanel”);
-const studentLevelPanel = document.getElementById(“studentLevelPanel”);
-const keySelector = document.getElementById(“keySelector”);
-const tasksPreview = document.getElementById(“tasksPreview”);
-const currentLevelDisplay = document.getElementById(“currentLevelDisplay”);
-const finalStatsPanel = document.getElementById(“finalStatsPanel”);
+// Settings inputs
+const fontFamilySelect = document.getElementById("fontFamilySelect");
+const fontSizeInput = document.getElementById("fontSizeInput");
+const colorInput = document.getElementById("colorInput");
+const solutionFontFamily = document.getElementById("solutionFontFamily");
+const solutionFontSize = document.getElementById("solutionFontSize");
+const feedbackColorInput = document.getElementById("feedbackColorInput");
+const showStatsCheckbox = document.getElementById("showStatsCheckbox");
+const finalFeedbackText = document.getElementById("finalFeedbackText");
+const previewQuestionText = document.getElementById("previewQuestionText");
+
+let uiSettings = {
+  fontFamily: fontFamilySelect.value,
+  fontSize: fontSizeInput.value + "px",
+  questionColor: colorInput.value,
+  solutionFontFamily: solutionFontFamily.value,
+  solutionFontSize: solutionFontSize.value + "px",
+  feedbackColor: feedbackColorInput.value,
+  showStats: showStatsCheckbox.checked,
+  finalFeedbackText: finalFeedbackText.value.trim()
+};
 
 function initKeyboard() {
-keySelector.innerHTML = “”;
-for (const groupId in KEY_GROUPS) {
-const group = KEY_GROUPS[groupId];
-const wrapper = document.createElement(“div”);
-wrapper.className = “key-group”;
-const title = document.createElement(“strong”);
-title.textContent = group.title;
-const presetBtn = document.createElement(“button”);
-presetBtn.className = “preset-btn”;
-presetBtn.textContent = “Включить всё”;
-presetBtn.onclick = () => {
-wrapper.querySelectorAll(“input[type=checkbox]”).forEach(cb => cb.checked = true);
-};
-wrapper.append(title, presetBtn);
-const keySelector_inner = document.createElement(“div”);
-keySelector_inner.className = “key-selector”;
-group.keys.forEach(k => {
-const label = document.createElement(“label”);
-const cb = document.createElement(“input”);
-cb.type = “checkbox”;
-cb.value = k;
-cb.checked = true;
-label.append(cb, " ", k);
-keySelector_inner.appendChild(label);
-});
-wrapper.appendChild(keySelector_inner);
-keySelector.appendChild(wrapper);
-}
+  keySelector.innerHTML = "";
+  for (const groupId in KEY_GROUPS) {
+    const group = KEY_GROUPS[groupId];
+    const wrapper = document.createElement("div");
+    wrapper.className = "key-group";
+    const title = document.createElement("strong");
+    title.textContent = group.title;
+    const presetBtn = document.createElement("button");
+    presetBtn.className = "preset-btn";
+    presetBtn.textContent = "Включить всё";
+    presetBtn.onclick = () => {
+      wrapper.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = true);
+    };
+    wrapper.append(title, presetBtn);
+    const keySelector_inner = document.createElement("div");
+    keySelector_inner.className = "key-selector";
+    group.keys.forEach(k => {
+      const label = document.createElement("label");
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.value = k;
+      cb.checked = true;
+      label.append(cb, " ", k);
+      keySelector_inner.appendChild(label);
+    });
+    wrapper.appendChild(keySelector_inner);
+    keySelector.appendChild(wrapper);
+  }
 }
 initKeyboard();
 
-document.querySelectorAll(“.level-btn”).forEach(btn => {
-btn.addEventListener(“click”, () => {
-document.querySelectorAll(“.level-btn”).forEach(b => b.classList.remove(“active”));
-btn.classList.add(“active”);
-currentEditLevel = parseInt(btn.dataset.level);
-currentLevelDisplay.textContent = currentEditLevel;
-editingTaskIndex = null;
-document.getElementById(“cancelEdit”).disabled = true;
-document.getElementById(“tQuestion”).value = “”;
-document.getElementById(“tAnswers”).value = “”;
-renderTasksPreview();
-});
-});
-
-// Обработчик кнопки “Добавить” – теперь работает корректно
-document.getElementById(“addTask”).onclick = () => {
-const questionInput = document.getElementById(“tQuestion”);
-const answersInput = document.getElementById(“tAnswers”);
-
-const question = questionInput.value.trim();
-const answers = answersInput.value.split(“,”).map(a => a.trim()).filter(a => a.length);
-
-if (!question) {
-alert(“Пожалуйста, введите текст задания.”);
-return;
+function updateUISettings() {
+  uiSettings.fontFamily = fontFamilySelect.value;
+  uiSettings.fontSize = fontSizeInput.value + "px";
+  uiSettings.questionColor = colorInput.value;
+  uiSettings.solutionFontFamily = solutionFontFamily.value;
+  uiSettings.solutionFontSize = solutionFontSize.value + "px";
+  uiSettings.feedbackColor = feedbackColorInput.value;
+  uiSettings.showStats = showStatsCheckbox.checked;
+  uiSettings.finalFeedbackText = finalFeedbackText.value.trim() || "Серия заданий завершена.";
+  
+  const questionText = document.getElementById("tQuestion").value || "Пример вопроса";
+  previewQuestionText.textContent = questionText;
+  previewQuestionText.style.color = uiSettings.questionColor;
+  previewQuestionText.style.fontFamily = uiSettings.fontFamily;
+  previewQuestionText.style.fontSize = uiSettings.fontSize;
 }
-if (answers.length === 0) {
-alert(“Пожалуйста, введите хотя бы один правильный ответ.”);
-return;
-}
+[fontFamilySelect, fontSizeInput, colorInput, solutionFontFamily, solutionFontSize, feedbackColorInput, showStatsCheckbox, finalFeedbackText, document.getElementById("tQuestion")].forEach(el => {
+  el.addEventListener("input", updateUISettings);
+});
+updateUISettings();
 
-const newTask = {
-question: question,
-answers: answers,
-keyboard: […keySelector.querySelectorAll(“input[type=checkbox]:checked”)].map(cb => cb.value)
+document.querySelectorAll(".level-btn").forEach(btn => {
+  if (btn.id === 'restartBtn') return; // Исключаем кнопку рестарта из этого обработчика
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".level-btn:not(#restartBtn)").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentEditLevel = parseInt(btn.dataset.level);
+    currentLevelDisplay.textContent = currentEditLevel;
+    editingTaskIndex = null;
+    document.getElementById("cancelEdit").disabled = true;
+    document.getElementById("tQuestion").value = "";
+    document.getElementById("tAnswers").value = "";
+    document.getElementById("tRequireSolution").checked = false;
+    renderTasksPreview();
+  });
+});
+
+document.getElementById("addTask").onclick = () => {
+  const question = document.getElementById("tQuestion").value.trim();
+  const answers = document.getElementById("tAnswers").value.split(",").map(a => a.trim()).filter(a => a);
+  const requireSolution = document.getElementById("tRequireSolution").checked;
+  if (!question || !answers.length) {
+    alert("Заполните вопрос и ответы!");
+    return;
+  }
+  const task = {
+    question,
+    answers,
+    keyboard: [...keySelector.querySelectorAll("input:checked")].map(c => c.value),
+    requireSolution
+  };
+  if (editingTaskIndex !== null) {
+    tasks[currentEditLevel][editingTaskIndex] = task;
+    editingTaskIndex = null;
+    document.getElementById("cancelEdit").disabled = true;
+  } else {
+    tasks[currentEditLevel].push(task);
+  }
+  document.getElementById("tQuestion").value = "";
+  document.getElementById("tAnswers").value = "";
+  document.getElementById("tRequireSolution").checked = false;
+  renderTasksPreview();
 };
 
-if (editingTaskIndex !== null) {
-tasks[currentEditLevel][editingTaskIndex] = newTask;
-editingTaskIndex = null;
-document.getElementById(“cancelEdit”).disabled = true;
-} else {
-tasks[currentEditLevel].push(newTask);
-}
-
-questionInput.value = “”;
-answersInput.value = “”;
-
-renderTasksPreview();
-};
-
-// Обработчик отмены редактирования
-document.getElementById(“cancelEdit”).onclick = () => {
-editingTaskIndex = null;
-document.getElementById(“cancelEdit”).disabled = true;
-document.getElementById(“tQuestion”).value = “”;
-document.getElementById(“tAnswers”).value = “”;
+document.getElementById("cancelEdit").onclick = () => {
+  editingTaskIndex = null;
+  document.getElementById("cancelEdit").disabled = true;
+  document.getElementById("tQuestion").value = "";
+  document.getElementById("tAnswers").value = "";
+  document.getElementById("tRequireSolution").checked = false;
 };
 
 function renderTasksPreview() {
-tasksPreview.innerHTML = “”;
-const levelTasks = tasks[currentEditLevel];
-if (levelTasks.length === 0) {
-tasksPreview.innerHTML = “<p style=‘text-align:center; color:#999;’>Нет заданий для этого уровня</p>”;
-return;
+  tasksPreview.innerHTML = "";
+  const levelTasks = tasks[currentEditLevel];
+  if (levelTasks.length === 0) {
+    tasksPreview.innerHTML = "<p style='text-align: center; color: #999;'>Нет заданий для этого уровня</p>";
+    return;
+  }
+  levelTasks.forEach((task, index) => {
+    const div = document.createElement("div");
+    div.className = `task-item level-${currentEditLevel}`;
+    div.innerHTML = `
+      <div class="task-item-header">
+        <span>Задание ${index + 1}</span>
+        <span class="task-level-badge level-${currentEditLevel}">Уровень ${currentEditLevel}</span>
+      </div>
+      <div class="task-item-content">
+        <b>❓ ${task.question}</b><br>
+        <small>✓ ${task.answers.join(", ")}</small><br>
+        <small><i>Решение: ${task.requireSolution ? "требуется" : "не требуется"}</i></small>
+      </div>
+      <div class="task-item-buttons">
+        <button class="edit-btn" onclick="editTask(${index})">✏️ Редактировать</button>
+        <button class="delete-btn" onclick="deleteTask(${index})">🗑 Удалить</button>
+      </div>
+    `;
+    tasksPreview.appendChild(div);
+  });
 }
-levelTasks.forEach((task, index) => {
-const div = document.createElement(“div”);
-div.className = task-item level-${currentEditLevel};
-div.innerHTML =        <div class="task-item-header">         <span>Задание ${index+1}</span>         <span class="task-level-badge level-${currentEditLevel}">Уровень ${currentEditLevel}</span>       </div>       <div class="task-item-content">         <b>❓ ${task.question}</b><br>         <small>✓ ${task.answers.join(", ")}</small>       </div>       <div class="task-item-buttons">         <button class="edit-btn" onclick="editTask(${index})">✏️ Редактировать</button>         <button class="delete-btn" onclick="deleteTask(${index})">🗑 Удалить</button>       </div>;
-tasksPreview.appendChild(div);
-});
-}
-
 window.deleteTask = function(index) {
-if (!confirm(“Удалить задание?”)) return;
-tasks[currentEditLevel].splice(index, 1);
-renderTasksPreview();
+  if (!confirm("Удалить задание?")) return;
+  tasks[currentEditLevel].splice(index, 1);
+  renderTasksPreview();
 };
-
 window.editTask = function(index) {
-const task = tasks[currentEditLevel][index];
-editingTaskIndex = index;
-document.getElementById(“tQuestion”).value = task.question;
-document.getElementById(“tAnswers”).value = task.answers.join(“, “);
-document.getElementById(“cancelEdit”).disabled = false;
-[…keySelector.querySelectorAll(“input”)].forEach(cb => {
-cb.checked = task.keyboard.includes(cb.value);
-});
-document.querySelector(”.tasks-editor”).scrollIntoView({behavior:“smooth”});
+  const task = tasks[currentEditLevel][index];
+  editingTaskIndex = index;
+  document.getElementById("tQuestion").value = task.question;
+  document.getElementById("tAnswers").value = task.answers.join(", ");
+  document.getElementById("cancelEdit").disabled = false;
+  document.getElementById("tRequireSolution").checked = !!task.requireSolution;
+  [...keySelector.querySelectorAll("input")].forEach(cb => {
+    cb.checked = task.keyboard.includes(cb.value);
+  });
+  document.querySelector(".tasks-editor").scrollIntoView({ behavior: "smooth" });
 };
 
-document.getElementById(“startSeries”).onclick = () => {
-const count = parseInt(document.getElementById(“taskCount”).value,10);
-if (!count || count<1) {
-alert(“Укажите количество заданий”);
-return;
-}
-const hasAnyTasks = Object.values(tasks).some(levelTasks => levelTasks.length > 0);
-if (!hasAnyTasks) {
-alert(“Добавьте хотя бы одно задание!”);
-return;
-}
-teacherPanel.style.display = “none”;
-studentLevelPanel.style.display = “block”;
+document.getElementById("startSeries").onclick = () => {
+  const count = parseInt(document.getElementById("taskCount").value, 10);
+  if (!count || count < 1) {
+    alert("Укажите количество заданий");
+    return;
+  }
+  const hasAnyTasks = Object.values(tasks).some(levelTasks => levelTasks.length > 0);
+  if (!hasAnyTasks) {
+    alert("Добавьте хотя бы одно задание!");
+    return;
+  }
+  teacherPanel.style.display = "none";
+  studentLevelPanel.style.display = "block";
 };
 
-function resetStats() {
-totalTasksCount = 0;
-solvedFirstTry = 0;
-solvedSecondTry = 0;
-solvedThirdTry = 0;
-totalScore = 0;
-score = 0;
-}
-
-document.querySelectorAll(“.student-level-btn”).forEach(btn => {
-btn.addEventListener(“click”, ()=>{
-selectedLevel = parseInt(btn.dataset.level);
-const count = parseInt(document.getElementById(“taskCount”).value,10);
-if(tasks[selectedLevel].length === 0) {
-alert(На уровне ${selectedLevel} нет заданий!);
-return;
-}
-if(count > tasks[selectedLevel].length) {
-alert(На уровне ${selectedLevel} только ${tasks[selectedLevel].length} заданий, а вы хотите выдать ${count});
-return;
-}
-studentTasks = getRandomTasks(tasks[selectedLevel], count);
-studentLevelPanel.style.display = “none”;
-studentPanel.style.display = “block”;
-resetStats();
-totalTasksCount = studentTasks.length;
-scoreEl.textContent = “Баллы: 0”;
-currentTaskIndex = 0;
-finalStatsPanel.style.display = “none”;
-feedback.style.display = “block”;
-statsPanel.style.display = “flex”;
-loadTask(0);
-});
+document.querySelectorAll(".student-level-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedLevel = parseInt(btn.dataset.level);
+    const count = parseInt(document.getElementById("taskCount").value, 10);
+    if (tasks[selectedLevel].length === 0) {
+      alert(`На уровне ${selectedLevel} нет заданий!`);
+      return;
+    }
+    const maxCount = Math.min(count, tasks[selectedLevel].length);
+    
+    studentTasks = getRandomTasks(tasks[selectedLevel], maxCount);
+    studentLevelPanel.style.display = "none";
+    studentPanel.style.display = "block";
+    resultsPanel.style.display = "none";
+    
+    // Сброс статистики сессии
+    score = 0;
+    sessionHistory = [];
+    scoreEl.textContent = "Баллы: 0";
+    currentTaskIndex = 0;
+    applyUISettings();
+    loadTask(0);
+  });
 });
 
 backBtn.onclick = () => {
-studentPanel.style.display = “none”;
-studentLevelPanel.style.display = “block”;
-backBtn.textContent = “← Назад”;
+  studentPanel.style.display = "none";
+  studentLevelPanel.style.display = "block";
+};
+
+document.getElementById("restartBtn").onclick = () => {
+  resultsPanel.style.display = "none";
+  studentLevelPanel.style.display = "block";
 };
 
 function getRandomTasks(allTasks, count) {
-const shuffled = […allTasks].sort(() => 0.5 - Math.random());
-return shuffled.slice(0, count);
+  const shuffled = [...allTasks].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
 }
 
 function insertAtCursor(v) {
-if (!taskFinished) input.value += v;
+  if (!taskFinished) input.value += v;
+}
+
+// Запись результата в историю
+function recordResult(success, points) {
+  const currentTask = studentTasks[currentTaskIndex];
+  sessionHistory.push({
+    question: currentTask.question,
+    attempts: attemptCount,
+    points: points,
+    success: success
+  });
 }
 
 function disableTask() {
-taskFinished = true;
-input.disabled = true;
-nextBtn.disabled = false;
-document.querySelectorAll(“.key”).forEach(b => b.classList.add(“disabled”));
+  taskFinished = true;
+  input.disabled = true;
+  solutionInput.disabled = true;
+  nextBtn.disabled = false;
+  document.querySelectorAll(".key").forEach(b => b.classList.add("disabled"));
 }
 
 function checkAnswer() {
-if(taskFinished) return;
-attemptCount++;
-attemptsEl.textContent = Попытка: ${attemptCount} из ${maxAttempts};
-const user = input.value.replace(/\s+/g, “”);
-if(studentTasks[currentTaskIndex].answers.includes(user)) {
-const pts = scoring[attemptCount] || 0;
-score += pts;
-totalScore += pts;
-if(attemptCount === 1) solvedFirstTry++;
-else if(attemptCount === 2) solvedSecondTry++;
-else if(attemptCount >= 3) solvedThirdTry++;
-scoreEl.textContent = Баллы: ${score};
-feedback.textContent = ✅ Верно! +${pts};
-feedback.style.color = “green”;
-disableTask();
-} else {
-feedback.textContent = “❌ Неверно”;
-feedback.style.color = “red”;
-if(attemptCount >= maxAttempts) disableTask();
+  if (taskFinished) return;
+  attemptCount++;
+  attemptsEl.textContent = `Попытка: ${attemptCount} из ${maxAttempts}`;
+  const user = input.value.replace(/\s+/g,"");
+  if (studentTasks[currentTaskIndex].answers.includes(user)) {
+    const pts = scoring[attemptCount] || 0;
+    score += pts;
+    scoreEl.textContent = `Баллы: ${score}`;
+    feedback.textContent = `✅ Верно! +${pts}`;
+    feedback.style.color = uiSettings.feedbackColor;
+    
+    recordResult(true, pts); // Записываем успех
+    disableTask();
+  } else {
+    feedback.textContent = "❌ Неверно";
+    feedback.style.color = "red";
+    if (attemptCount >= maxAttempts) {
+      recordResult(false, 0); // Записываем провал
+      disableTask();
+    }
+  }
 }
+
+function applyUISettings() {
+  questionEl.style.fontFamily = uiSettings.fontFamily;
+  questionEl.style.fontSize = uiSettings.fontSize;
+  questionEl.style.color = uiSettings.questionColor;
+  feedback.style.color = uiSettings.feedbackColor;
+  statsPanel.style.display = uiSettings.showStats ? "flex" : "none";
+
+  solutionInput.style.fontFamily = uiSettings.solutionFontFamily;
+  solutionInput.style.fontSize = uiSettings.solutionFontSize;
 }
 
 function loadTask(i) {
-const t = studentTasks[i];
-if(!t) {
-questionEl.textContent = “Ошибка загрузки задания”;
-return;
+  const t = studentTasks[i];
+  if (!t) { return; }
+  questionEl.textContent = `(${i + 1}/${studentTasks.length}) ${t.question}`;
+  input.value = "";
+  input.disabled = false;
+  feedback.textContent = "";
+  attemptCount = 0;
+  taskFinished = false;
+  nextBtn.disabled = true;
+  attemptsEl.textContent = `Попытка: 0 из ${maxAttempts}`;
+  
+  if (t.requireSolution) {
+    solutionInput.style.display = "block";
+    solutionInput.value = "";
+    solutionInput.disabled = false;
+    solutionInput.style.fontFamily = uiSettings.solutionFontFamily;
+    solutionInput.style.fontSize = uiSettings.solutionFontSize;
+  } else {
+    solutionInput.style.display = "none";
+    solutionInput.value = "";
+    solutionInput.disabled = true;
+  }
+  
+  statsPanel.style.display = uiSettings.showStats ? "flex" : "none";
+  keyboard.innerHTML = "";
+  t.keyboard.forEach(k => {
+    const b = document.createElement("button");
+    b.className = "key";
+    b.textContent = k;
+    if (k === "Очистить") {
+      b.classList.add("action");
+      b.onclick = () => input.value = "";
+    } else if (k === "Проверить") {
+      b.classList.add("action");
+      b.onclick = checkAnswer;
+    } else {
+      b.onclick = () => insertAtCursor(k);
+    }
+    keyboard.appendChild(b);
+  });
 }
-questionEl.textContent = (${i+1}/${studentTasks.length}) ${t.question};
-input.value = “”;
-input.disabled = false;
-feedback.textContent = “”;
-attemptCount = 0;
-taskFinished = false;
-nextBtn.disabled = true;
-attemptsEl.textContent = Попытка: 0 из ${maxAttempts};
-keyboard.innerHTML = “”;
-t.keyboard.forEach(k=>{
-const b = document.createElement(“button”);
-b.className = “key”;
-b.textContent = k;
-if(k===“Очистить”){
-b.classList.add(“action”);
-b.onclick = ()=>input.value = “”;
-} else if(k===“Проверить”) {
-b.classList.add(“action”);
-b.onclick = checkAnswer;
-} else {
-b.onclick = ()=>insertAtCursor(k);
-}
-keyboard.appendChild(b);
-});
-finalStatsPanel.style.display = “none”;
-statsPanel.style.display = “flex”;
-feedback.style.display = “block”;
+
+// Отображение финальной таблицы
+function showResults() {
+  studentPanel.style.display = "none";
+  resultsPanel.style.display = "block";
+  
+  document.getElementById("finalSubtitle").textContent = uiSettings.finalFeedbackText;
+  document.getElementById("resTotalScore").textContent = score;
+  
+  const correctCount = sessionHistory.filter(h => h.success).length;
+  document.getElementById("resCorrectCount").textContent = `${correctCount}/${sessionHistory.length}`;
+  
+  const accuracy = sessionHistory.length > 0 
+    ? Math.round((correctCount / sessionHistory.length) * 100) 
+    : 0;
+  document.getElementById("resAccuracy").textContent = `${accuracy}%`;
+
+  const tbody = document.getElementById("resultsBody");
+  tbody.innerHTML = "";
+  
+  sessionHistory.forEach((item, idx) => {
+    const row = document.createElement("tr");
+    row.className = item.success ? "res-row-correct" : "res-row-wrong";
+    
+    const attemptsText = item.success ? item.attempts : `${item.attempts} (fail)`;
+    const statusHtml = item.success 
+      ? `<span class="status-badge status-ok">Верно</span>` 
+      : `<span class="status-badge status-fail">Неверно</span>`;
+      
+    row.innerHTML = `
+      <td>${idx + 1}</td>
+      <td>${item.question} <br> ${statusHtml}</td>
+      <td style="text-align:center;">${attemptsText}</td>
+      <td style="text-align:center; font-weight:bold;">${item.points}</td>
+    `;
+    tbody.appendChild(row);
+  });
 }
 
 nextBtn.onclick = () => {
-currentTaskIndex++;
-if(currentTaskIndex < studentTasks.length) {
-loadTask(currentTaskIndex);
-} else {
-questionEl.textContent = “🎉 Серия завершена!”;
-keyboard.innerHTML = “”;
-nextBtn.disabled = true;
-backBtn.textContent = “← На главное меню”;
-  tatsPanel.style.display = "none";
-feedback.style.display = "none";
-
-finalStatsPanel.style.display = "block";
-finalStatsPanel.innerHTML = `
-  <h3>Итог серии</h3>
-  <div><b>Всего заданий:</b> ${totalTasksCount}</div>
-  <div><b>Решено с 1-й попытки:</b> ${solvedFirstTry}</div>
-  <div><b>Решено со 2-й попытки:</b> ${solvedSecondTry}</div>
-  <div><b>Решено с 3-й попытки:</b> ${solvedThirdTry}</div>
-  <div><b>Баллы набранные:</b> ${totalScore}</div>
-  <div style="margin-top: 10px; font-style: italic;">Неплохо, но всегда можно лучше!</div>
-`;
- }
+  currentTaskIndex++;
+  if (currentTaskIndex < studentTasks.length) {
+    loadTask(currentTaskIndex);
+  } else {
+    // ВМЕСТО простого сообщения показываем результаты
+    showResults();
+  }
 };
+
 </script>
 </body>
 </html>
