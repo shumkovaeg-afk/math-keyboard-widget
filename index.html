@@ -97,13 +97,31 @@ body {
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
 /* === ЭКРАН РЕШЕНИЯ (Сам виджет) === */
-.student-task-screen { width: 100%; max-width: 450px; position: relative; }
-.back-btn { background: transparent; color: #777; border: 1px solid #ccc; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 13px; margin-bottom: 10px; }
+/* ИЗМЕНЕНИЕ: Ширина теперь 100% и max-width увеличен до 1000px для широких слайдов */
+.student-task-screen { width: 100%; max-width: 1000px; position: relative; display: flex; flex-direction: column; }
+
+.back-btn { align-self: flex-start; background: transparent; color: #777; border: 1px solid #ccc; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 13px; margin-bottom: 10px; }
 .back-btn:hover { background: #eee; color: #333; }
 
 .question-area { background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 15px; min-height: 60px; display: flex; align-items: center; justify-content: center; text-align: center;}
+
+/* ИЗМЕНЕНИЕ: Поле решения растягивается */
+#solutionInput {
+  width: 100%; 
+  min-height: 100px; /* Чуть выше по умолчанию */
+  margin-bottom: 15px; 
+  padding: 15px; 
+  border-radius: 8px; 
+  border: 1px solid #ccc; 
+  resize: vertical; /* Можно менять высоту */
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+}
+#solutionInput:focus { border-color: #2196f3; outline: none; }
+
 .answer-input { 
-  width: 100%; font-size: 22px; padding: 10px; margin-bottom: 10px; text-align: center; 
+  width: 100%; max-width: 400px; /* Поле ответа не слишком широкое */
+  margin: 0 auto 10px auto; /* Центрируем */
+  font-size: 22px; padding: 10px; text-align: center; display: block;
   border: 2px solid #e0e0e0; border-radius: 10px; background: #fafafa; color: #333;
 }
 .answer-input:focus { border-color: #2196f3; outline: none; background: #fff; }
@@ -112,11 +130,15 @@ body {
 .stats { font-size: 13px; color: #666; margin-bottom: 15px; display: flex; justify-content: space-between; padding: 0 10px; }
 
 /* === НОВАЯ КРАСИВАЯ КЛАВИАТУРА === */
+/* ИЗМЕНЕНИЕ: Клавиатура центрируется и не растягивается слишком сильно */
 .keyboard-container {
   background: #eaeff2;
   padding: 15px;
   border-radius: 16px;
   box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 550px;
+  margin: 0 auto; /* Центрирование */
 }
 
 /* Сетка для основных кнопок (цифры и знаки) */
@@ -290,7 +312,6 @@ body {
 
         <div class="tasks-preview" id="tasksPreview"></div>
 
-        <!-- ИСПРАВЛЕНИЕ: Добавлен явный label для количества заданий -->
         <div style="border-top: 1px solid #eee; margin-top: 15px; padding-top: 15px;">
           <label for="taskCount" style="display:block; font-weight:bold; margin-bottom:5px; color:#444;">Количество заданий для ученика:</label>
           <div class="start-series-group">
@@ -321,11 +342,18 @@ body {
           <label for="colorInput">Цвет текста вопроса:</label>
           <input type="color" id="colorInput" value="#333333" />
         </div>
+        
+        <!-- ИЗМЕНЕНИЕ: Добавлены шрифты и цвет для решения -->
+        <hr style="width:100%; border:0; border-top:1px solid #ddd; margin: 10px 0;">
+        
         <div class="settings-row">
           <label for="solutionFontFamily">Шрифт решения:</label>
           <select id="solutionFontFamily">
             <option value="'Segoe UI', sans-serif" selected>Segoe UI</option>
             <option value="Arial, sans-serif">Arial</option>
+            <option value="'Times New Roman', serif">Times New Roman</option>
+            <option value="'Courier New', monospace">Courier New</option>
+            <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
           </select>
         </div>
         <div class="settings-row">
@@ -333,7 +361,22 @@ body {
           <input type="number" id="solutionFontSize" value="16" min="10" max="40" />
         </div>
         <div class="settings-row">
-          <label for="feedbackColorInput">Цвет успеха:</label>
+          <label for="solutionColorInput">Цвет текста решения:</label>
+          <input type="color" id="solutionColorInput" value="#000000" />
+        </div>
+
+        <!-- ИЗМЕНЕНИЕ: Блок для проверки стиля решения -->
+        <div class="settings-row" style="width:100%;">
+          <label style="width:100%;">Тест стиля решения:</label>
+          <div id="solutionPreviewText" style="width:100%; border: 1px solid #ccc; padding: 10px; border-radius: 4px; background: #fff;">
+            Пример текста решения...
+          </div>
+        </div>
+
+        <hr style="width:100%; border:0; border-top:1px solid #ddd; margin: 10px 0;">
+
+        <div class="settings-row">
+          <label for="feedbackColorInput">Цвет успеха (галочки):</label>
           <input type="color" id="feedbackColorInput" value="#2e7d32" />
         </div>
         <div class="settings-row" style="align-items: center;">
@@ -345,7 +388,7 @@ body {
           <textarea id="finalFeedbackText">Отличная работа! Уровень пройден.</textarea>
         </div>
         <div class="settings-row">
-          <label>Превью:</label>
+          <label>Превью вопроса:</label>
           <div id="previewQuestionText" style="width:100%; border: 1px solid #ccc; padding: 15px; border-radius: 8px; min-height: 50px; font-size: 24px; text-align:center; background:white;"></div>
         </div>
       </div>
@@ -378,7 +421,7 @@ body {
     <div class="question" id="question"></div>
   </div>
 
-  <textarea id="solutionInput" placeholder="Введите решение (необязательно)" style="width: 100%; height: 80px; margin-bottom: 10px; font-size: 16px; padding: 10px; border-radius: 8px; border: 1px solid #ccc; display: none;"></textarea>
+  <textarea id="solutionInput" placeholder="Введите решение (необязательно)" style="display: none;"></textarea>
 
   <input id="answerInput" class="answer-input" placeholder="Ответ..." readonly>
 
@@ -474,7 +517,6 @@ const studentLevelPanel = document.getElementById("studentLevelPanel");
 const studentPanel = document.getElementById("studentPanel");
 const resultsPanel = document.getElementById("resultsPanel");
 
-// Клавиатура разделена
 const keyboardMain = document.getElementById("keyboardMain");
 const keyboardActions = document.getElementById("keyboardActions");
 
@@ -499,10 +541,12 @@ const fontSizeInput = document.getElementById("fontSizeInput");
 const colorInput = document.getElementById("colorInput");
 const solutionFontFamily = document.getElementById("solutionFontFamily");
 const solutionFontSize = document.getElementById("solutionFontSize");
+const solutionColorInput = document.getElementById("solutionColorInput");
 const feedbackColorInput = document.getElementById("feedbackColorInput");
 const showStatsCheckbox = document.getElementById("showStatsCheckbox");
 const finalFeedbackText = document.getElementById("finalFeedbackText");
 const previewQuestionText = document.getElementById("previewQuestionText");
+const solutionPreviewText = document.getElementById("solutionPreviewText");
 
 let uiSettings = {
   fontFamily: fontFamilySelect.value,
@@ -510,6 +554,7 @@ let uiSettings = {
   questionColor: colorInput.value,
   solutionFontFamily: solutionFontFamily.value,
   solutionFontSize: solutionFontSize.value + "px",
+  solutionColor: solutionColorInput.value,
   feedbackColor: feedbackColorInput.value,
   showStats: showStatsCheckbox.checked,
   finalFeedbackText: finalFeedbackText.value.trim()
@@ -518,7 +563,7 @@ let uiSettings = {
 let editingTaskIndex = null;
 let currentEditLevel = 1;
 
-// --- Инициализация клавиатуры (Чекбоксы учителя) ---
+// --- Инициализация клавиатуры ---
 function initKeyboard() {
   keySelector.innerHTML = "";
   for (const groupId in KEY_GROUPS) {
@@ -557,17 +602,25 @@ function updateUISettings() {
   uiSettings.questionColor = colorInput.value;
   uiSettings.solutionFontFamily = solutionFontFamily.value;
   uiSettings.solutionFontSize = solutionFontSize.value + "px";
+  uiSettings.solutionColor = solutionColorInput.value;
   uiSettings.feedbackColor = feedbackColorInput.value;
   uiSettings.showStats = showStatsCheckbox.checked;
   uiSettings.finalFeedbackText = finalFeedbackText.value.trim() || "Уровень завершен.";
   
+  // Обновление превью вопроса
   const questionText = document.getElementById("tQuestion").value || "Пример вопроса";
   previewQuestionText.textContent = questionText;
   previewQuestionText.style.color = uiSettings.questionColor;
   previewQuestionText.style.fontFamily = uiSettings.fontFamily;
   previewQuestionText.style.fontSize = uiSettings.fontSize;
+
+  // ИЗМЕНЕНИЕ: Обновление превью решения для наглядности
+  solutionPreviewText.style.color = uiSettings.solutionColor;
+  solutionPreviewText.style.fontFamily = uiSettings.solutionFontFamily;
+  solutionPreviewText.style.fontSize = uiSettings.solutionFontSize;
 }
-[fontFamilySelect, fontSizeInput, colorInput, solutionFontFamily, solutionFontSize, feedbackColorInput, showStatsCheckbox, finalFeedbackText, document.getElementById("tQuestion")].forEach(el => {
+
+[fontFamilySelect, fontSizeInput, colorInput, solutionFontFamily, solutionFontSize, solutionColorInput, feedbackColorInput, showStatsCheckbox, finalFeedbackText, document.getElementById("tQuestion")].forEach(el => {
   el.addEventListener("input", updateUISettings);
 });
 updateUISettings();
@@ -830,17 +883,18 @@ function applyUISettings() {
   questionEl.style.color = uiSettings.questionColor;
   feedback.style.color = uiSettings.feedbackColor;
   statsPanel.style.display = uiSettings.showStats ? "flex" : "none";
+  
+  // Применяем настройки к полю решения
   solutionInput.style.fontFamily = uiSettings.solutionFontFamily;
   solutionInput.style.fontSize = uiSettings.solutionFontSize;
+  solutionInput.style.color = uiSettings.solutionColor;
 }
 
-// === ОБНОВЛЕННАЯ ФУНКЦИЯ ЗАГРУЗКИ ЗАДАНИЯ С КРАСИВОЙ КЛАВИАТУРОЙ ===
 function loadTask(i) {
   const t = studentTasks[i];
   if (!t) return;
   questionEl.textContent = `${t.question}`;
   input.value = "";
-  // В мобильном режиме лучше делать readonly, чтобы не вызывалась системная клавиатура
   input.readOnly = true; 
   feedback.textContent = "";
   attemptCount = 0;
@@ -858,21 +912,17 @@ function loadTask(i) {
   
   statsPanel.style.display = uiSettings.showStats ? "flex" : "none";
   
-  // Очистка контейнеров
   keyboardMain.innerHTML = "";
   keyboardActions.innerHTML = "";
 
-  // Фильтрация кнопок
   const actionKeys = ["Очистить", "Проверить"];
   const inputKeys = t.keyboard.filter(k => !actionKeys.includes(k));
   
-  // 1. Рендерим кнопки ввода в основную сетку
   inputKeys.forEach(k => {
     const b = document.createElement("button");
     b.textContent = k;
     b.className = "key";
     
-    // Определяем стиль по содержимому
     if (/\d/.test(k)) {
         b.classList.add("key-digit");
     } else {
@@ -883,10 +933,9 @@ function loadTask(i) {
     keyboardMain.appendChild(b);
   });
 
-  // 2. Рендерим кнопки действий вниз
   if (t.keyboard.includes("Очистить")) {
     const b = document.createElement("button");
-    b.textContent = "✖"; // Используем иконку для компактности или "Очистить"
+    b.textContent = "✖";
     b.className = "key key-clear";
     b.onclick = () => input.value = "";
     keyboardActions.appendChild(b);
@@ -957,7 +1006,6 @@ function buildTable(dataSet) {
       ? `<span class="status-badge status-ok">Верно</span>` 
       : `<span class="status-badge status-fail">Неверно</span>`;
     
-    // ИСПРАВЛЕНИЕ: Убрал levelBadge (L1, L2...), теперь просто вопрос
     row.innerHTML = `
       <td>${idx + 1}</td>
       <td>${item.question} <br> ${statusHtml}</td>
