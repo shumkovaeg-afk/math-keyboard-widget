@@ -69,7 +69,7 @@ body {
 .task-item.level-2 { border-left-color: #2196f3; }
 .task-item.level-3 { border-left-color: #f44336; }
 
-.start-series-group { display: flex; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
+.start-series-group { display: flex; gap: 10px; margin-top: 5px; }
 .start-series-group input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
 .start-series-group button { flex: 1; padding: 12px; font-size: 15px; font-weight: bold; background: #2e7d32; color: white; border: none; border-radius: 8px; cursor: pointer; }
 
@@ -290,9 +290,13 @@ body {
 
         <div class="tasks-preview" id="tasksPreview"></div>
 
-        <div class="start-series-group">
-          <input id="taskCount" type="number" min="1" placeholder="Кол-во заданий для ученика" value="3">
-          <button id="startSeries">▶️ Начать</button>
+        <!-- ИСПРАВЛЕНИЕ: Добавлен явный label для количества заданий -->
+        <div style="border-top: 1px solid #eee; margin-top: 15px; padding-top: 15px;">
+          <label for="taskCount" style="display:block; font-weight:bold; margin-bottom:5px; color:#444;">Количество заданий для ученика:</label>
+          <div class="start-series-group">
+            <input id="taskCount" type="number" min="1" value="3">
+            <button id="startSeries">▶️ Начать</button>
+          </div>
         </div>
       </div>
 
@@ -952,11 +956,11 @@ function buildTable(dataSet) {
     const statusHtml = item.success 
       ? `<span class="status-badge status-ok">Верно</span>` 
       : `<span class="status-badge status-fail">Неверно</span>`;
-    const levelBadge = `<span class="task-level-badge level-${item.level}">L${item.level}</span>`;
-
+    
+    // ИСПРАВЛЕНИЕ: Убрал levelBadge (L1, L2...), теперь просто вопрос
     row.innerHTML = `
       <td>${idx + 1}</td>
-      <td>${levelBadge} ${item.question} <br> ${statusHtml}</td>
+      <td>${item.question} <br> ${statusHtml}</td>
       <td style="text-align:center;">${attemptsText}</td>
       <td style="text-align:center; font-weight:bold;">${item.points}</td>
     `;
